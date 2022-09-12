@@ -33,7 +33,7 @@ const WelcomeScreen: FC = () => {
   }, [navigation]);
 
   return (
-    <Box bgColor="white" flex={1}>
+    <Box bgColor="white" safeArea flex={1}>
       <Button alignSelf="center" onPress={onPress}>
         Iniciar
       </Button>

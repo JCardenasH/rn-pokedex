@@ -21,6 +21,21 @@ enum Routes {
    * Home screen.
    */
   HOME_SCREEN = 'Home',
+
+  /**
+   * Pokemon stack navigator.
+   */
+  POKEMON_STACK = 'PokemonStack',
+
+  /**
+   * Pokemon stack - Pokemon list screen.
+   */
+  POKEMON_LIST_SCREEN = 'PokemonList',
+
+  /**
+   * Pokemon stack - Pokemon info screen.
+   */
+  POKEMON_INFO_SCREEN = 'PokemonInfo',
 }
 
 export default Routes;
