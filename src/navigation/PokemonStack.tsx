@@ -2,7 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { type FC } from 'react';
 import Routes from '../constants/routes';
 import PokemonInfoScreen from '../screens/PokemonInfo';
-import PokemonListScreen from '../screens/PokemonList';
+import PokemonScreen from '../screens/Pokemon';
 
 /**
  * Pokemon stack navigator - Param list.
@@ -11,7 +11,7 @@ export type PokemonStackParamList = {
   /**
    * Pokemon list screen params.
    */
-  [Routes.POKEMON_LIST_SCREEN]: undefined;
+  [Routes.POKEMON_SCREEN]: undefined;
 
   /**
    * Pokemon info screen params.
@@ -34,10 +34,7 @@ const PokemonStack: FC = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {/* Pokemon list screen */}
-      <Stack.Screen
-        name={Routes.POKEMON_LIST_SCREEN}
-        component={PokemonListScreen}
-      />
+      <Stack.Screen name={Routes.POKEMON_SCREEN} component={PokemonScreen} />
 
       {/* Pokemon info screen */}
       <Stack.Screen

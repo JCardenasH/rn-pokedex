@@ -1,11 +1,36 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
+import pokemon from './slices/pokemon';
 
+/**
+ * App store.
+ */
 const store = configureStore({
-  reducer: {},
+  // Store middleware
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+
+  // Store reducers
+  reducer: {
+    // Pokemon list reducer
+    pokemon,
+  },
 });
 
-export type AppDispatch = typeof store.dispatch;
+/**
+ * Root state type.
+ */
 export type RootState = ReturnType<typeof store.getState>;
+
+/**
+ * App dispatch type.
+ */
+export type AppDispatch = typeof store.dispatch;
+
+/**
+ * App thunk type.
+ */
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
   RootState,

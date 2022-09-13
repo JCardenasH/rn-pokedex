@@ -1,7 +1,11 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Icon } from 'native-base';
+import {
+  BottomTabNavigationOptions,
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
+import { Icon, Image } from 'native-base';
 import React, { type FC } from 'react';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Octicons from 'react-native-vector-icons/Octicons';
+import { Images } from '../constants/assets';
 import Routes from '../constants/routes';
 import HomeScreen from '../screens/Home';
 import PokemonStack from './PokemonStack';
@@ -27,11 +31,37 @@ export type MainTabParamList = {
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
 /**
+ * Main tab navigator - Navigation options.
+ */
+const screenOptions: BottomTabNavigationOptions = {
+  // Header background style
+  headerStyle: { backgroundColor: '#222224' },
+
+  // Header tint color
+  headerTintColor: '#f0f0f0',
+
+  // Hide tab bar labels
+  tabBarShowLabel: false,
+
+  // Tab bar - Active background color
+  tabBarActiveBackgroundColor: '#f00000',
+
+  // Tab bar - Active tint color
+  tabBarActiveTintColor: '#f0f0f0',
+
+  // Tab bar - Inactive background color
+  tabBarInactiveBackgroundColor: '#f00000',
+
+  // Tab bar - Inactive tint color
+  tabBarInactiveTintColor: '#222224',
+};
+
+/**
  * Main tab navigator component.
  */
 const MainTab: FC = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={screenOptions}>
       {/* Home screen */}
       <Tab.Screen
         name={Routes.HOME_SCREEN}
@@ -39,7 +69,7 @@ const MainTab: FC = () => {
         options={{
           // Tab bar icon
           tabBarIcon: ({ color, size }) => (
-            <Icon as={FontAwesome} color={color} name="home" size={size} />
+            <Icon as={Octicons} color={color} name="home" size={size} />
           ),
         }}
       />
@@ -51,7 +81,13 @@ const MainTab: FC = () => {
         options={{
           // Tab bar icon
           tabBarIcon: ({ color, size }) => (
-            <Icon as={FontAwesome} color={color} name="circle" size={size} />
+            <Image
+              alt="Pokeball"
+              h={`${size}px`}
+              tintColor={color}
+              source={Images.Pokeball}
+              w={`${size}px`}
+            />
           ),
           // Screen title
           title: 'Pokemon',

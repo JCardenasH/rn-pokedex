@@ -30,7 +30,7 @@ enum Routes {
   /**
    * Pokemon stack - Pokemon list screen.
    */
-  POKEMON_LIST_SCREEN = 'PokemonList',
+  POKEMON_SCREEN = 'Pokemon',
 
   /**
    * Pokemon stack - Pokemon info screen.
