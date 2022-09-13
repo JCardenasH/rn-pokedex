@@ -31,7 +31,7 @@ const PokemonScreen: FC = () => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      dispatch(getPokemon({ limit, offset }));
+      dispatch(getPokemon({ limit: 5, offset }));
     });
 
     return unsubscribe;
@@ -57,20 +57,14 @@ const PokemonScreen: FC = () => {
   );
 
   return (
-    <Box bgColor="brand.400" flex={1} safeArea>
+    <Box bgColor="brand.400" flex={1}>
       <FlatList
-        refreshControl={
-          <RefreshControl
-            colors={['#f00000']}
-            enabled={false}
-            refreshing={loading}
-          />
-        }
         contentContainerStyle={styles.list}
         data={pokemon}
         keyExtractor={item => `${item.id}`}
         ListFooterComponent={<ListFooter isLoading={loading} />}
         onEndReached={onEndReached}
+        onEndReachedThreshold={0.2}
         renderItem={renderItem}
       />
     </Box>
@@ -79,7 +73,7 @@ const PokemonScreen: FC = () => {
 
 const styles = StyleSheet.create({
   list: {
-    paddingVertical: 10,
+    paddingVertical: 5,
   },
 });
 

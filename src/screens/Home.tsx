@@ -32,7 +32,7 @@ const HomeScreen: FC = () => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      dispatch(getPokemon({ limit: 10, offset: 0 }));
+      dispatch(getPokemon({ limit: 4, offset: 0 }));
     });
 
     return unsubscribe;
@@ -43,7 +43,7 @@ const HomeScreen: FC = () => {
   const items = React.useMemo(() => pokemon.slice(0, 4), [pokemon]);
 
   return (
-    <Box bgColor="brand.400" flex={1} safeArea>
+    <Box bgColor="brand.400" flex={1}>
       <ScrollView _contentContainerStyle={{ p: 4 }} flex={1}>
         <HStack alignItems="center" justifyContent="space-between">
           <Heading>Pokedex</Heading>

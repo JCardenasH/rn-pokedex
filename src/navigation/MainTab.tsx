@@ -54,6 +54,8 @@ const screenOptions: BottomTabNavigationOptions = {
 
   // Tab bar - Inactive tint color
   tabBarInactiveTintColor: '#222224',
+
+  tabBarStyle: { backgroundColor: '#f00000' },
 };
 
 /**
