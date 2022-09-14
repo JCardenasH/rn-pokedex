@@ -1,4 +1,9 @@
-import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
+import {
+  configureStore,
+  type Action,
+  type ThunkAction,
+} from '@reduxjs/toolkit';
+import items from './slices/items';
 import pokemon from './slices/pokemon';
 
 /**
@@ -13,6 +18,8 @@ const store = configureStore({
 
   // Store reducers
   reducer: {
+    // Items list reducer
+    items,
     // Pokémon list reducer
     pokemon,
   },

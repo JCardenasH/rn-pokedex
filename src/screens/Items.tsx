@@ -1,34 +1,34 @@
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList } from 'native-base';
-import type { Pokemon } from 'pokenode-ts';
+import type { Item } from 'pokenode-ts';
 import React, { useCallback, useEffect, type FC } from 'react';
 import { StyleSheet, type ListRenderItemInfo } from 'react-native';
 import Layout from '../components/common/Layout';
 import Spinner from '../components/common/Spinner';
-import PokemonItem from '../components/pokemon/PokemonItem';
+import ItemTile from '../components/items/ItemTile';
 import Routes from '../constants/routes';
-import { useAllPokemon, usePokemonState } from '../hooks/pokemon';
+import { useAllItems, useItemsState } from '../hooks/items';
 import { useAppDispatch } from '../hooks/store';
-import type { PokemonStackParamList } from '../navigation/PokemonStack';
-import { getPokemonThunk, removeAllPokemon } from '../store/slices/pokemon';
+import type { ItemsStackParamList } from '../navigation/ItemsStack';
+import { getItemsThunk, removeAllItems } from '../store/slices/items';
 
 /**
- * Pokémon screen navigation prop.
+ * Items screen navigation prop.
  */
-export type PokemonScreenNavigationProp = NativeStackNavigationProp<
-  PokemonStackParamList,
-  Routes.PokemonScreen
+export type ItemsScreenNavigationProp = NativeStackNavigationProp<
+  ItemsStackParamList,
+  Routes.ItemsScreen
 >;
 
 /**
- * Pokémon screen component.
+ * Items screen component.
  */
-const PokemonScreen: FC = () => {
+const ItemsScreen: FC = () => {
   /**
    * Navigation prop.
    */
-  const navigation = useNavigation<PokemonScreenNavigationProp>();
+  const navigation = useNavigation<ItemsScreenNavigationProp>();
 
   /**
    * App dispatch.
@@ -36,22 +36,22 @@ const PokemonScreen: FC = () => {
   const dispatch = useAppDispatch();
 
   /**
-   * Pokémon state.
+   * Items state.
    */
-  const { loading, next, limit, offset } = usePokemonState();
+  const { loading, next, limit, offset } = useItemsState();
 
   /**
-   * Pokémon list.
+   * Items list.
    */
-  const pokemon = useAllPokemon();
+  const items = useAllItems();
 
   /**
    * Navigation - onDidFocus event side effect.
    */
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
-      dispatch(removeAllPokemon());
-      dispatch(getPokemonThunk({ limit, offset }));
+      dispatch(removeAllItems());
+      dispatch(getItemsThunk({ limit, offset }));
     });
 
     return unsubscribe;
@@ -64,17 +64,17 @@ const PokemonScreen: FC = () => {
   const onEndReached = useCallback(() => {
     // Validates if there's a next URL stored in state
     if (next) {
-      // Fetch next Pokémon page
-      dispatch(getPokemonThunk({ url: next }));
+      // Fetch next Item page
+      dispatch(getItemsThunk({ url: next }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [next]);
 
   /**
-   * Render Pokémon item.
+   * Render item.
    */
   const renderItem = useCallback(
-    ({ item }: ListRenderItemInfo<Pokemon>) => <PokemonItem pokemon={item} />,
+    ({ item }: ListRenderItemInfo<Item>) => <ItemTile item={item} />,
     [],
   );
 
@@ -82,7 +82,8 @@ const PokemonScreen: FC = () => {
     <Layout>
       <FlatList
         contentContainerStyle={styles.list}
-        data={pokemon}
+        numColumns={2}
+        data={items}
         ListFooterComponent={<Spinner isLoading={loading} />}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.2}
@@ -94,8 +95,9 @@ const PokemonScreen: FC = () => {
 
 const styles = StyleSheet.create({
   list: {
+    alignItems: 'center',
     paddingVertical: 5,
   },
 });
 
-export default PokemonScreen;
+export default ItemsScreen;

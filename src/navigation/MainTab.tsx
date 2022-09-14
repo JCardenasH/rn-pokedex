@@ -1,20 +1,27 @@
 import {
-  BottomTabNavigationOptions,
   createBottomTabNavigator,
+  type BottomTabNavigationOptions,
 } from '@react-navigation/bottom-tabs';
-import { NavigatorScreenParams } from '@react-navigation/native';
+import type { NavigatorScreenParams } from '@react-navigation/native';
 import { Icon, Image, StatusBar } from 'native-base';
 import React, { Fragment, type FC } from 'react';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import { Images } from '../constants/assets';
 import Routes from '../constants/routes';
 import HomeStack, { type HomeStackParamList } from './HomeStack';
+import ItemsStack, { type ItemsStackParamList } from './ItemsStack';
 import PokemonStack, { type PokemonStackParamList } from './PokemonStack';
 
 /**
  * Main tab navigator - Params list.
  */
 export type MainTabParamList = {
+  /**
+   * Items stack navigator params.
+   */
+  [Routes.ItemsStack]: NavigatorScreenParams<ItemsStackParamList>;
+
   /**
    * Home stack navigator params.
    */
@@ -67,7 +74,26 @@ const MainTab: FC = () => {
       <StatusBar backgroundColor="#222224" barStyle="light-content" />
 
       {/* Tab navigator */}
-      <Tab.Navigator screenOptions={screenOptions}>
+      <Tab.Navigator
+        initialRouteName={Routes.HomeStack}
+        screenOptions={screenOptions}>
+        {/* Items stack navigator */}
+        <Tab.Screen
+          name={Routes.ItemsStack}
+          component={ItemsStack}
+          options={{
+            // Tab bar icon
+            tabBarIcon: ({ color, size }) => (
+              <Icon
+                as={MaterialCommunityIcons}
+                color={color}
+                name="bag-personal"
+                size={size}
+              />
+            ),
+          }}
+        />
+
         {/* Home stack navigator */}
         <Tab.Screen
           name={Routes.HomeStack}

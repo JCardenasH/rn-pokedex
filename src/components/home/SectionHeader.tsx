@@ -1,5 +1,5 @@
 import { Button, Heading, HStack, Icon } from 'native-base';
-import React, { FC, memo } from 'react';
+import React, { memo, type FC } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 type Props = {
@@ -10,6 +10,7 @@ type Props = {
 const SectionHeader: FC<Props> = ({ onPressMore, title }) => {
   return (
     <HStack alignItems="center" justifyContent="space-between">
+      {/* Header title */}
       <Heading>{title}</Heading>
 
       <Button

@@ -1,11 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
-import { Badge, Heading, HStack, Image, VStack } from 'native-base';
+import { Heading, HStack, Image, Pressable, VStack } from 'native-base';
 import type { Pokemon } from 'pokenode-ts';
 import React, { memo, useCallback, type FC } from 'react';
-import { TouchableOpacity, useWindowDimensions } from 'react-native';
+import { useWindowDimensions } from 'react-native';
 import Routes from '../../constants/routes';
-import { type PokemonScreenNavigationProp } from '../../screens/Pokemon';
-import { getTypeColor } from '../../utils/pokemon';
+import type { PokemonScreenNavigationProp } from '../../screens/Pokemon';
+import PokemonTypeBadge from './PokemonTypeBadge';
 
 /**
  * Pokémon - List item component props.
@@ -40,45 +40,42 @@ const PokemonItem: FC<Props> = ({ pokemon }) => {
   }, [navigation, pokemon]);
 
   return (
-    <TouchableOpacity onPress={onPress}>
-      <HStack
-        bgColor="white"
-        borderRadius="lg"
-        mx={2}
-        my={1.5}
-        px="1"
-        shadow="3"
-        space={2}>
-        {/* Pokémon image */}
-        <Image
-          alt={pokemon.name}
-          h={layout.width * 0.25}
-          resizeMode="contain"
-          source={{ uri: pokemon.sprites.front_default! }}
-          w={layout.width * 0.25}
-        />
+    <Pressable onPress={onPress}>
+      {({ isPressed }) => (
+        <HStack
+          bgColor="white"
+          borderRadius="lg"
+          mx={4}
+          my={1.5}
+          opacity={isPressed ? 0.75 : 1}
+          px="1"
+          shadow="3"
+          space={2}>
+          {/* Pokémon image */}
+          <Image
+            alt={pokemon.name}
+            h={layout.width * 0.25}
+            resizeMode="contain"
+            source={{ uri: pokemon.sprites.front_default! }}
+            w={layout.width * 0.25}
+          />
 
-        <VStack alignItems="flex-start" flex={1} pr={1} py={1.5} space={2}>
-          {/* Pokémon name */}
-          <Heading fontSize="xl" textTransform="capitalize">
-            {pokemon.name}
-          </Heading>
+          <VStack alignItems="flex-start" flex={1} pr={1} py={1.5} space={2}>
+            {/* Pokémon name */}
+            <Heading color="brand.300" fontSize="xl" textTransform="capitalize">
+              {pokemon.name}
+            </Heading>
 
-          {/* Pokémon types */}
-          <HStack space={2}>
-            {pokemon.types.map((item, index) => (
-              <Badge
-                _text={{ color: 'brand.300', textTransform: 'capitalize' }}
-                bgColor={getTypeColor(item.type.name)}
-                key={`type-${index}`}
-                rounded="full">
-                {item.type.name}
-              </Badge>
-            ))}
-          </HStack>
-        </VStack>
-      </HStack>
-    </TouchableOpacity>
+            {/* Pokémon types */}
+            <HStack space={2}>
+              {pokemon.types.map((item, index) => (
+                <PokemonTypeBadge key={`type-${index}`} item={item} />
+              ))}
+            </HStack>
+          </VStack>
+        </HStack>
+      )}
+    </Pressable>
   );
 };
 

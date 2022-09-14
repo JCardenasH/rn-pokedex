@@ -18,6 +18,16 @@ enum Routes {
   MainTab = 'MainTab',
 
   /**
+   * Items stack navigator.
+   */
+  ItemsStack = 'ItemsStack',
+
+  /**
+   * Items stack - Items screen.
+   */
+  ItemsScreen = 'ItemsScreen',
+
+  /**
    * Home stack navigator.
    */
   HomeStack = 'HomeStack',

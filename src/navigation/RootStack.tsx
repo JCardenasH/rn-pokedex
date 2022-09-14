@@ -1,8 +1,9 @@
+import type { NavigatorScreenParams } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { type FC } from 'react';
 import Routes from '../constants/routes';
 import WelcomeScreen from '../screens/Welcome';
-import MainTab from './MainTab';
+import MainTab, { type MainTabParamList } from './MainTab';
 
 /**
  * Root stack navigator - Param list.
@@ -16,7 +17,7 @@ export type RootStackParamList = {
   /**
    * Main tab navigator params.
    */
-  [Routes.MainTab]: undefined;
+  [Routes.MainTab]: NavigatorScreenParams<MainTabParamList>;
 };
 
 /**

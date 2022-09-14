@@ -42,12 +42,17 @@ const PokemonStack: FC = () => {
         headerTintColor: '#f0f0f0',
       }}>
       {/* Pokémon list screen */}
-      <Stack.Screen name={Routes.PokemonScreen} component={PokemonScreen} />
+      <Stack.Screen
+        name={Routes.PokemonScreen}
+        component={PokemonScreen}
+        options={{ title: 'Pokémon' }}
+      />
 
       {/* Pokémon info screen */}
       <Stack.Screen
         name={Routes.PokemonInfoScreen}
         component={PokemonInfoScreen}
+        options={{ title: 'Pokémon info' }}
       />
     </Stack.Navigator>
   );

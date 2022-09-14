@@ -1,10 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { type Pokemon } from 'pokenode-ts';
-import { type RootState } from '..';
+import type { Pokemon } from 'pokenode-ts';
+import type { RootState } from '..';
 import PokemonApi from '../../api/pokemon';
-import { type PokemonQueryArgs } from '../../interfaces/pokemon';
+import type { ApiQueryArgs } from '../../interfaces/pokemon';
 import { getParamsFromArgs } from '../../utils/url';
-import { type PokemonState } from '../slices/pokemon';
+import type { PokemonState } from '../slices/pokemon';
 
 /**
  * Get Pokémon async thunk - Return type.
@@ -16,7 +16,7 @@ type Returns = Pick<PokemonState, 'limit' | 'offset' | 'next'> & {
 /**
  * Get Pokémon async thunk - Args.
  */
-type Args = PokemonQueryArgs;
+type Args = ApiQueryArgs;
 
 /**
  * Get Pokémon async thunk - APIConfig.

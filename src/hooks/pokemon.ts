@@ -1,12 +1,19 @@
-import { selectors } from '../store/slices/pokemon';
+import { selectAllPokemon, selectPokemonById } from '../store/slices/pokemon';
 import { useAppSelector } from './store';
+
+/**
+ * usePokemonState.
+ *
+ * Returns the state of the Pokémon reducer.
+ */
+export const usePokemonState = () => useAppSelector(state => state.pokemon);
 
 /**
  * useAllPokemon hook.
  *
- * Returns all the Pokémon names stored in the EntityAdapter.
+ * Returns all the Pokémon stored in the EntityAdapter.
  */
-export const useAllPokemon = () => useAppSelector(selectors.selectAll);
+export const useAllPokemon = () => useAppSelector(selectAllPokemon);
 
 /**
  * useSinglePokemon hook.
@@ -15,11 +22,4 @@ export const useAllPokemon = () => useAppSelector(selectors.selectAll);
  * @returns - Pokémon named resource from list.
  */
 export const useSinglePokemon = (id: number) =>
-  useAppSelector(state => selectors.selectById(state, id));
-
-/**
- * usePokemonState.
- *
- * Returns the state of the Pokémon reducer.
- */
-export const usePokemonState = () => useAppSelector(state => state.pokemon);
+  useAppSelector(state => selectPokemonById(state, id));

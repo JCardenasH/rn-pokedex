@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { RootState } from '..';
-import pokemonEntityAdapter from '../entities/pokemon';
-import { getPokemon } from '../thunks/pokemon';
+import itemsEntityAdapter from '../entities/items';
+import { getItems } from '../thunks/items';
 
 /**
- * Pokémon slice - State.
+ * Items slice - State.
  */
-export interface PokemonState {
+export interface ItemsState {
   /**
    * Is loading?
    */
@@ -29,18 +29,18 @@ export interface PokemonState {
 }
 
 /**
- * Pokémon slice.
+ * Items slice.
  */
 const slice = createSlice({
   /**
    * Slice name.
    */
-  name: 'pokemon',
+  name: 'items',
 
   /**
    * Initial state.
    */
-  initialState: pokemonEntityAdapter.getInitialState<PokemonState>({
+  initialState: itemsEntityAdapter.getInitialState<ItemsState>({
     loading: true,
     limit: 10,
     offset: 0,
@@ -61,39 +61,39 @@ const slice = createSlice({
       state.limit = 10;
       // Reset next URL
       state.next = null;
-      // Remove all Pokémon from list
-      pokemonEntityAdapter.removeAll(state);
+      // Remove all items from list
+      itemsEntityAdapter.removeAll(state);
     },
   },
 
   /**
-   * Pokémon slice - Extra reducers.
+   * Items slice - Extra reducers.
    *
    * @param builder
    */
   extraReducers: builder => {
     /**
-     * Get Pokémon - Pending case
+     * Get Items - Pending case
      */
-    builder.addCase(getPokemon.pending, state => {
+    builder.addCase(getItems.pending, state => {
       // Start loading
       state.loading = true;
     });
 
     /**
-     * Get Pokémon - Rejected case
+     * Get Items - Rejected case
      */
-    builder.addCase(getPokemon.rejected, state => {
+    builder.addCase(getItems.rejected, state => {
       // Stop loading
       state.loading = false;
     });
 
     /**
-     * Get Pokémon - Fulfilled case
+     * Get Items - Fulfilled case
      */
-    builder.addCase(getPokemon.fulfilled, (state, action) => {
+    builder.addCase(getItems.fulfilled, (state, action) => {
       // Insert/update new items
-      pokemonEntityAdapter.upsertMany(state, action.payload.data);
+      itemsEntityAdapter.upsertMany(state, action.payload.data);
       // Stop loading
       state.loading = false;
       // Update limit
@@ -107,19 +107,19 @@ const slice = createSlice({
 });
 
 /**
- * Pokémon Slice - Actions.
+ * Items slice - Actions.
  */
-export const { removeAll: removeAllPokemon } = slice.actions;
+export const { removeAll: removeAllItems } = slice.actions;
 
 /**
- * Pokémon Slice - Thunks.
+ * Items slice - Thunks.
  */
-export const getPokemonThunk = getPokemon;
+export const getItemsThunk = getItems;
 
 /**
- * Pokémon Slice - Selectors
+ * Items slice - Selectors
  */
-export const { selectAll: selectAllPokemon, selectById: selectPokemonById } =
-  pokemonEntityAdapter.getSelectors<RootState>(state => state.pokemon);
+export const { selectAll: selectAllItems, selectById: selectItemById } =
+  itemsEntityAdapter.getSelectors<RootState>(state => state.items);
 
 export default slice.reducer;

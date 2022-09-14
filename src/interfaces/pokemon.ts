@@ -1,5 +1,5 @@
 import type { ApiQueryParams, ApiQueryUrl } from './common';
 
-export type PokemonQueryArgs = ApiQueryParams | ApiQueryUrl;
+export type ApiQueryArgs = ApiQueryParams | ApiQueryUrl;
 
 export type IdOrName = number | string;
