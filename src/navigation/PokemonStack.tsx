@@ -1,44 +1,52 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { type FC } from 'react';
 import Routes from '../constants/routes';
-import PokemonInfoScreen from '../screens/PokemonInfo';
 import PokemonScreen from '../screens/Pokemon';
+import PokemonInfoScreen from '../screens/PokemonInfo';
 
 /**
- * Pokemon stack navigator - Param list.
+ * Pokémon stack navigator - Param list.
  */
 export type PokemonStackParamList = {
   /**
-   * Pokemon list screen params.
+   * Pokémon list screen params.
    */
-  [Routes.POKEMON_SCREEN]: undefined;
+  [Routes.PokemonScreen]: undefined;
 
   /**
-   * Pokemon info screen params.
+   * Pokémon info screen params.
    */
-  [Routes.POKEMON_INFO_SCREEN]: {
-    // Pokemon name
-    name: string;
+  [Routes.PokemonInfoScreen]: {
+    // Pokémon name
+    id: number;
   };
 };
 
 /**
- * Pokemon stack navigator.
+ * Pokémon stack navigator.
  */
 const Stack = createNativeStackNavigator<PokemonStackParamList>();
 
 /**
- * Pokemon stack navigator component.
+ * Pokémon stack navigator component.
  */
 const PokemonStack: FC = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {/* Pokemon list screen */}
-      <Stack.Screen name={Routes.POKEMON_SCREEN} component={PokemonScreen} />
+    <Stack.Navigator
+      screenOptions={{
+        // Hide back title
+        headerBackTitleVisible: false,
+        // Header background style
+        headerStyle: { backgroundColor: '#222224' },
+        // Header tint color
+        headerTintColor: '#f0f0f0',
+      }}>
+      {/* Pokémon list screen */}
+      <Stack.Screen name={Routes.PokemonScreen} component={PokemonScreen} />
 
-      {/* Pokemon info screen */}
+      {/* Pokémon info screen */}
       <Stack.Screen
-        name={Routes.POKEMON_INFO_SCREEN}
+        name={Routes.PokemonInfoScreen}
         component={PokemonInfoScreen}
       />
     </Stack.Navigator>

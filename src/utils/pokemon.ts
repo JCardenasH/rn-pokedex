@@ -49,3 +49,8 @@ export const getTypeColor = (name: string) => {
       return '#c5c5c555';
   }
 };
+
+export const capitalizeName = (name: string, lower = false) =>
+  (lower ? name.toLowerCase() : name).replace(/(?:^|\s|["'([{])+\S/g, match =>
+    match.toUpperCase(),
+  );

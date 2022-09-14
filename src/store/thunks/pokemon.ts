@@ -1,30 +1,30 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Pokemon } from 'pokenode-ts';
-import { RootState } from '..';
+import { type Pokemon } from 'pokenode-ts';
+import { type RootState } from '..';
 import PokemonApi from '../../api/pokemon';
-import { PokemonQueryArgs } from '../../interfaces/pokemon';
+import { type PokemonQueryArgs } from '../../interfaces/pokemon';
 import { getParamsFromArgs } from '../../utils/url';
-import { PokemonState } from '../slices/pokemon';
+import { type PokemonState } from '../slices/pokemon';
 
 /**
- * Get Pokemon async thunk - Return type.
+ * Get Pokémon async thunk - Return type.
  */
 type Returns = Pick<PokemonState, 'limit' | 'offset' | 'next'> & {
   data: Pokemon[];
 };
 
 /**
- * Get Pokemon async thunk - Args.
+ * Get Pokémon async thunk - Args.
  */
 type Args = PokemonQueryArgs;
 
 /**
- * Get Pokemon async thunk - APIConfig.
+ * Get Pokémon async thunk - APIConfig.
  */
 type Config = { state: RootState };
 
 /**
- * Get Pokemon async thunk.
+ * Get Pokémon async thunk.
  */
 export const getPokemon = createAsyncThunk<Returns, Args, Config>(
   'pokemon/getPokemon',
@@ -33,7 +33,7 @@ export const getPokemon = createAsyncThunk<Returns, Args, Config>(
     const { limit, offset } = getParamsFromArgs(args);
 
     try {
-      // Get Pokemon list
+      // Get Pokémon list
       const { data: names } = await PokemonApi.getPokemonList(
         { limit, offset },
         { signal },

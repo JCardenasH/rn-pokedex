@@ -5,37 +5,42 @@ enum Routes {
   /**
    * Root stack navigator.
    */
-  ROOT_STACK = 'RootStack',
+  RootStack = 'RootStack',
 
   /**
    * Root stack - Welcome screen.
    */
-  WELCOME_SCREEN = 'Welcome',
+  WelcomeScreen = 'Welcome',
 
   /**
    * Main tab navigator.
    */
-  MAIN_TAB = 'MainTab',
+  MainTab = 'MainTab',
 
   /**
-   * Home screen.
+   * Home stack navigator.
    */
-  HOME_SCREEN = 'Home',
+  HomeStack = 'HomeStack',
 
   /**
-   * Pokemon stack navigator.
+   * Home stack - Home screen.
    */
-  POKEMON_STACK = 'PokemonStack',
+  HomeScreen = 'Home',
 
   /**
-   * Pokemon stack - Pokemon list screen.
+   * Pokémon stack navigator.
    */
-  POKEMON_SCREEN = 'Pokemon',
+  PokemonStack = 'PokemonStack',
 
   /**
-   * Pokemon stack - Pokemon info screen.
+   * Pokémon stack - Pokémon list screen.
    */
-  POKEMON_INFO_SCREEN = 'PokemonInfo',
+  PokemonScreen = 'Pokemon',
+
+  /**
+   * Pokémon stack - Pokémon info screen.
+   */
+  PokemonInfoScreen = 'PokemonInfo',
 }
 
 export default Routes;

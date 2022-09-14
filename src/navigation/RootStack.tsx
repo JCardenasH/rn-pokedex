@@ -11,12 +11,12 @@ export type RootStackParamList = {
   /**
    * Welcome screen params.
    */
-  [Routes.WELCOME_SCREEN]: undefined;
+  [Routes.WelcomeScreen]: undefined;
 
   /**
    * Main tab navigator params.
    */
-  [Routes.MAIN_TAB]: undefined;
+  [Routes.MainTab]: undefined;
 };
 
 /**
@@ -31,10 +31,10 @@ const RootStack: FC = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {/* Welcome screen */}
-      <Stack.Screen name={Routes.WELCOME_SCREEN} component={WelcomeScreen} />
+      <Stack.Screen name={Routes.WelcomeScreen} component={WelcomeScreen} />
 
       {/* Main tab navigator */}
-      <Stack.Screen name={Routes.MAIN_TAB} component={MainTab} />
+      <Stack.Screen name={Routes.MainTab} component={MainTab} />
     </Stack.Navigator>
   );
 };

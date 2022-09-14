@@ -1,7 +1,7 @@
 import { createEntityAdapter } from '@reduxjs/toolkit';
-import { Pokemon } from 'pokenode-ts';
+import { type Pokemon } from 'pokenode-ts';
 
 /**
- * Pokemon entity adapter.
+ * Pokémon entity adapter.
  */
 export const pokemonEntityAdapter = createEntityAdapter<Pokemon>();

@@ -5,16 +5,16 @@ import { IdOrName } from '../interfaces/pokemon';
 import api from '../utils/api';
 
 /**
- * Pokemon API module.
+ * Pokémon API module.
  */
 export default class PokemonApi {
   /**
-   * Get pokemon list endpoint.
+   * Get Pokémon list endpoint.
    *
    * @param params - Query params.
    * @param config - (Optional) Axios request config.
    *
-   * @returns - Pokemon named resource list.
+   * @returns - Pokémon named resource list.
    */
   public static getPokemonList(
     params: ApiQueryParams,
@@ -24,11 +24,11 @@ export default class PokemonApi {
   }
 
   /**
-   * Get pokemon info endpoint.
+   * Get Pokémon info endpoint.
    *
-   * @param idOrName - Pokemon ID or Name.
+   * @param idOrName - Pokémon ID or Name.
    * @param config - (Optional) Axios request config.
-   * @returns - Pokemon info.
+   * @returns - Pokémon info.
    */
   public static getPokemonInfo(
     idOrName: IdOrName,

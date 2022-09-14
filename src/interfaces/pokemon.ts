@@ -1,4 +1,4 @@
-import { ApiQueryParams, ApiQueryUrl } from './common';
+import type { ApiQueryParams, ApiQueryUrl } from './common';
 
 export type PokemonQueryArgs = ApiQueryParams | ApiQueryUrl;
 

@@ -13,7 +13,7 @@ const store = configureStore({
 
   // Store reducers
   reducer: {
-    // Pokemon list reducer
+    // Pokémon list reducer
     pokemon,
   },
 });

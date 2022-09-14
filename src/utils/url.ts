@@ -2,7 +2,7 @@ import { URL } from 'react-native-url-polyfill';
 import { PokemonQueryArgs } from '../interfaces/pokemon';
 
 /**
- * Get Pokemon query params from args.
+ * Get Pokémon query params from args.
  *
  * Validates if a URL is sent as an argument to the request to get its parameters,
  * otherwise it will return the arguments as they are.

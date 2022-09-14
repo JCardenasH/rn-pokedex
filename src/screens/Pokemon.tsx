@@ -1,41 +1,55 @@
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Box, FlatList } from 'native-base';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { FlatList } from 'native-base';
 import { type Pokemon } from 'pokenode-ts';
 import React, { useCallback, useEffect, type FC } from 'react';
-import { ListRenderItemInfo, RefreshControl, StyleSheet } from 'react-native';
-import ListFooter from '../components/common/ListFooter';
+import { StyleSheet, type ListRenderItemInfo } from 'react-native';
+import Layout from '../components/common/Layout';
+import Spinner from '../components/common/Spinner';
 import PokemonItem from '../components/pokemon/PokemonItem';
 import Routes from '../constants/routes';
 import { useAllPokemon, usePokemonState } from '../hooks/pokemon';
 import { useAppDispatch } from '../hooks/store';
 import { PokemonStackParamList } from '../navigation/PokemonStack';
-import { getPokemon } from '../store/thunks/pokemon';
+import { actions as pokemonActions } from '../store/slices/pokemon';
 
 export type PokemonScreenNavigationProp = NativeStackNavigationProp<
   PokemonStackParamList,
-  Routes.POKEMON_SCREEN
+  Routes.PokemonScreen
 >;
 
 /**
- * Pokemon screen component
+ * Pokémon screen component
  */
 const PokemonScreen: FC = () => {
+  /**
+   * Navigation prop.
+   */
   const navigation = useNavigation<PokemonScreenNavigationProp>();
 
   const dispatch = useAppDispatch();
 
+  /**
+   * Pokémon state.
+   */
   const { loading, next, limit, offset } = usePokemonState();
 
+  /**
+   * Pokémon list.
+   */
   const pokemon = useAllPokemon();
 
+  /**
+   * Navigation - onDidFocus event side effect.
+   */
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      dispatch(getPokemon({ limit: 5, offset }));
+    const unsubscribe = navigation.addListener('focus', async () => {
+      dispatch(pokemonActions.getPokemon({ limit, offset }));
     });
 
     return unsubscribe;
-  }, [dispatch, navigation, limit, offset]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigation]);
 
   /**
    * Flatlist - onEndReached event handler.
@@ -43,13 +57,14 @@ const PokemonScreen: FC = () => {
   const onEndReached = useCallback(() => {
     // Validates if there's a next URL stored in state
     if (next) {
-      // Fetch next page Pokemon
-      dispatch(getPokemon({ url: next }));
+      // Fetch next page Pokémon
+      dispatch(pokemonActions.getPokemon({ url: next }));
     }
-  }, [dispatch, next]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [next]);
 
   /**
-   * Render Pokemon item.
+   * Render Pokémon item.
    */
   const renderItem = useCallback(
     ({ item }: ListRenderItemInfo<Pokemon>) => <PokemonItem pokemon={item} />,
@@ -57,17 +72,16 @@ const PokemonScreen: FC = () => {
   );
 
   return (
-    <Box bgColor="brand.400" flex={1}>
+    <Layout>
       <FlatList
         contentContainerStyle={styles.list}
         data={pokemon}
-        keyExtractor={item => `${item.id}`}
-        ListFooterComponent={<ListFooter isLoading={loading} />}
+        ListFooterComponent={<Spinner isLoading={loading} />}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.2}
         renderItem={renderItem}
       />
-    </Box>
+    </Layout>
   );
 };
 

@@ -1,67 +1,121 @@
-import { createSlice, EntityState } from '@reduxjs/toolkit';
-import { Pokemon } from 'pokenode-ts';
+import { createSlice } from '@reduxjs/toolkit';
 import { type RootState } from '..';
 import { pokemonEntityAdapter } from '../entities/pokemon';
 import { getPokemon } from '../thunks/pokemon';
 
+/**
+ * Pokémon slice - State.
+ */
 export interface PokemonState {
+  /**
+   * Is loading?
+   */
   loading: boolean;
 
-  data: EntityState<Pokemon>;
-
+  /**
+   * Limit.
+   */
   limit: number;
 
+  /**
+   * Offset.
+   */
   offset: number;
 
+  /**
+   * Next URL.
+   */
   next: string | null;
 }
 
-const initialState: PokemonState = {
-  loading: true,
-
-  data: pokemonEntityAdapter.getInitialState(),
-
-  limit: 10,
-
-  offset: 0,
-
-  next: null,
-};
-
+/**
+ * Pokémon slice.
+ */
 const slice = createSlice({
+  /**
+   * Slice name.
+   */
   name: 'pokemon',
 
-  initialState,
+  /**
+   * Initial state.
+   */
+  initialState: pokemonEntityAdapter.getInitialState<PokemonState>({
+    loading: true,
+    limit: 10,
+    offset: 0,
+    next: null,
+  }),
 
-  reducers: {},
+  /**
+   * Reducers.
+   */
+  reducers: {
+    /**
+     * Remove all items.
+     */
+    removeAllPokemon(state) {
+      // Reset current page/offset
+      state.offset = 0;
+      // Reset count limit
+      state.limit = 10;
+      // Reset next URL
+      state.next = null;
+      // Remove all Pokémon from list
+      pokemonEntityAdapter.removeAll(state);
+    },
+  },
 
+  /**
+   * Pokémon slice - Extra reducers.
+   *
+   * @param builder
+   */
   extraReducers: builder => {
+    /**
+     * Get Pokémon - Pending case
+     */
     builder.addCase(getPokemon.pending, state => {
       // Start loading
       state.loading = true;
     });
 
+    /**
+     * Get Pokémon - Rejected case
+     */
     builder.addCase(getPokemon.rejected, state => {
+      // Stop loading
       state.loading = false;
-      state.limit = 10;
-      state.offset = 0;
-      state.next = null;
     });
 
+    /**
+     * Get Pokémon - Fulfilled case
+     */
     builder.addCase(getPokemon.fulfilled, (state, action) => {
-      pokemonEntityAdapter.upsertMany(state.data, action.payload.data);
+      // Insert/update new items
+      pokemonEntityAdapter.upsertMany(state, action.payload.data);
+      // Stop loading
       state.loading = false;
+      // Update limit
       state.limit = action.payload.limit;
+      // Update next URL
       state.next = action.payload.next;
+      // Update current page/offset
       state.offset = action.payload.offset;
     });
   },
 });
 
+/**
+ * Pokémon Slice - Actions.
+ */
 export const actions = { ...slice.actions, getPokemon };
 
+/**
+ * Pokémon Slice - Selectors
+ */
 export const selectors = pokemonEntityAdapter.getSelectors(
-  (state: RootState) => state.pokemon.data,
+  (state: RootState) => state.pokemon,
 );
 
 export default slice.reducer;
