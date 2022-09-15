@@ -11,7 +11,7 @@ import Routes from '../constants/routes';
 import { useAllItems, useItemsState } from '../hooks/items';
 import { useAppDispatch } from '../hooks/store';
 import type { ItemsStackParamList } from '../navigation/ItemsStack';
-import { getItemsThunk, removeAllItems } from '../store/slices/items';
+import { getItemsThunk } from '../store/slices/items';
 
 /**
  * Items screen navigation prop.
@@ -38,7 +38,7 @@ const ItemsScreen: FC = () => {
   /**
    * Items state.
    */
-  const { loading, next, limit, offset } = useItemsState();
+  const { loading, next, offset } = useItemsState();
 
   /**
    * Items list.
@@ -50,8 +50,7 @@ const ItemsScreen: FC = () => {
    */
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
-      dispatch(removeAllItems());
-      dispatch(getItemsThunk({ limit, offset }));
+      dispatch(getItemsThunk({ limit: 5, offset }));
     });
 
     return unsubscribe;

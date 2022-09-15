@@ -11,7 +11,7 @@ import Routes from '../constants/routes';
 import { useAllPokemon, usePokemonState } from '../hooks/pokemon';
 import { useAppDispatch } from '../hooks/store';
 import type { PokemonStackParamList } from '../navigation/PokemonStack';
-import { getPokemonThunk, removeAllPokemon } from '../store/slices/pokemon';
+import { getPokemonThunk } from '../store/slices/pokemon';
 
 /**
  * Pokémon screen navigation prop.
@@ -38,7 +38,7 @@ const PokemonScreen: FC = () => {
   /**
    * Pokémon state.
    */
-  const { loading, next, limit, offset } = usePokemonState();
+  const { loading, next, offset } = usePokemonState();
 
   /**
    * Pokémon list.
@@ -50,8 +50,7 @@ const PokemonScreen: FC = () => {
    */
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
-      dispatch(removeAllPokemon());
-      dispatch(getPokemonThunk({ limit, offset }));
+      dispatch(getPokemonThunk({ limit: 5, offset }));
     });
 
     return unsubscribe;

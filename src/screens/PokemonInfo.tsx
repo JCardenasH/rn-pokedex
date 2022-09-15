@@ -1,8 +1,27 @@
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import {
+  useNavigation,
+  useRoute,
+  type RouteProp,
+} from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Box, Heading, Image, Stack, Text } from 'native-base';
-import React, { useEffect, type FC } from 'react';
+import {
+  Box,
+  Divider,
+  Heading,
+  HStack,
+  Image,
+  ScrollView,
+  Stack,
+  Text,
+} from 'native-base';
+import type { Ability } from 'pokenode-ts';
+import React, { useCallback, useEffect, useState, type FC } from 'react';
+import { Alert } from 'react-native';
+import AbilitiesApi from '../api/abilities';
 import Layout from '../components/common/Layout';
+import Spinner from '../components/common/Spinner';
+import PokemonAbilityInfo from '../components/pokemon/PokemonAbilityInfo';
+import PokemonTypeBadge from '../components/pokemon/PokemonTypeBadge';
 import Routes from '../constants/routes';
 import { useSinglePokemon } from '../hooks/pokemon';
 import type { PokemonStackParamList } from '../navigation/PokemonStack';
@@ -44,6 +63,16 @@ const PokemonInfoScreen: FC = () => {
   const pokemon = useSinglePokemon(params.id);
 
   /**
+   * Is loading abilities? state.
+   */
+  const [loading, setLoading] = useState<boolean>(true);
+
+  /**
+   * Pokémon abilities list state.
+   */
+  const [abilities, setAbilities] = useState<Ability[]>([]);
+
+  /**
    * Selected Pokémon side effect.
    */
   useEffect(() => {
@@ -51,9 +80,37 @@ const PokemonInfoScreen: FC = () => {
     if (pokemon) {
       // Set Pokémon name as the header title text
       navigation.setOptions({ title: capitalizeName(pokemon.name, true) });
+      // Get abilities
+      getAbilities();
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pokemon]);
+
+  /**
+   * Get Pokémon abilities.
+   */
+  const getAbilities = useCallback(async () => {
+    if (pokemon) {
+      try {
+        const items: Ability[] = [];
+
+        for (const item of pokemon.abilities) {
+          const response = await AbilitiesApi.getAbilityInfo(item.ability.name);
+
+          items.push(response.data);
+        }
+
+        setAbilities(items);
+      } catch (error) {
+        Alert.alert(
+          'Abilities',
+          'There was an error while fetching the Pokémon abilities',
+        );
+      } finally {
+        setLoading(false);
+      }
+    }
   }, [pokemon]);
 
   // If the selected Pokémon doesn't exist or an error occurred, it will display an error text
@@ -63,40 +120,73 @@ const PokemonInfoScreen: FC = () => {
     );
   }
 
+  console.log(abilities);
+
   // Get first Pokémon type
   const [firstType] = pokemon.types;
 
   return (
     <Layout>
-      <Box bgColor={getTypeColor(firstType.type.name)} p="4" w="100%">
-        <Image
-          alt={pokemon.name}
-          h="200px"
-          resizeMode="contain"
-          source={{ uri: pokemon.sprites.front_default! }}
-          w="100%"
-        />
+      <ScrollView>
+        <Box bgColor={getTypeColor(firstType.type.name)} p="4" w="100%">
+          <Image
+            alt={pokemon.name}
+            h="200px"
+            resizeMode="contain"
+            source={{ uri: pokemon.sprites.front_default! }}
+            w="100%"
+          />
 
-        <Heading textTransform="capitalize">{pokemon.name}</Heading>
-      </Box>
+          <Heading textTransform="capitalize">{pokemon.name}</Heading>
+        </Box>
 
-      <Stack p="4" space={4}>
-        <Heading color="brand.200" fontSize="lg">
-          About
-        </Heading>
+        <Stack p="4" space={4}>
+          <Heading color="brand.200" fontSize="lg">
+            About
+          </Heading>
 
-        <Stack space={1}>
-          <Heading fontSize="sm">Height</Heading>
+          <Divider />
 
-          <Text>{pokemon.height} dm</Text>
+          <Stack space={1}>
+            <Heading fontSize="sm">Height</Heading>
+
+            <Text>{pokemon.height} dm</Text>
+          </Stack>
+
+          <Stack space={1}>
+            <Heading fontSize="sm">Weight</Heading>
+
+            <Text>{pokemon.weight} hg</Text>
+          </Stack>
+
+          <Stack space={2}>
+            <Heading fontSize="sm">Types</Heading>
+
+            {/* Pokémon types */}
+            <HStack space={2}>
+              {pokemon.types.map((item, index) => (
+                <PokemonTypeBadge key={`type-${index}`} item={item} />
+              ))}
+            </HStack>
+          </Stack>
+
+          <Heading color="brand.200" fontSize="lg">
+            Abilities
+          </Heading>
+
+          <Divider />
+
+          {loading ? (
+            <Spinner isLoading={loading} />
+          ) : (
+            <>
+              {abilities.map((item, index) => (
+                <PokemonAbilityInfo key={`ability-${index}`} ability={item} />
+              ))}
+            </>
+          )}
         </Stack>
-
-        <Stack space={1}>
-          <Heading fontSize="sm">Weight</Heading>
-
-          <Text>{pokemon.weight} hg</Text>
-        </Stack>
-      </Stack>
+      </ScrollView>
     </Layout>
   );
 };

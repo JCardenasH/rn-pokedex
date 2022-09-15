@@ -61,14 +61,20 @@ const HomeScreen: FC = () => {
    */
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      // Get first 10 Pokémon
-      dispatch(getPokemonThunk({ limit: 10, offset: 0 }));
-      // Get first 10 items
-      dispatch(getItemsThunk({ limit: 10, offset: 0 }));
+      if (pokemon.length === 0) {
+        // Get first 10 Pokémon
+        dispatch(getPokemonThunk({ limit: 4, offset: 0 }));
+      }
+
+      if (items.length === 0) {
+        // Get first 10 items
+        dispatch(getItemsThunk({ limit: 4, offset: 0 }));
+      }
     });
 
     return unsubscribe;
-  }, [dispatch, navigation]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigation]);
 
   /**
    * Pokémon section header - See more button - onPress event handler.
