@@ -16,6 +16,7 @@
     "@react-navigation/native-stack": "^6.8.0",
     "@reduxjs/toolkit": "^1.8.5",
     "axios": "^0.27.2",
+    "axios-mock-adapter": "^1.21.2",
     "native-base": "^3.4.15",
     "pokenode-ts": "^1.17.0",
     "react": "18.1.0",
@@ -54,6 +55,12 @@
       "jsx",
       "json",
       "node"
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!(@react-native|react-native|react-native-vector-icons|react-native-url-polyfill)/)"
     ]
   }
 }

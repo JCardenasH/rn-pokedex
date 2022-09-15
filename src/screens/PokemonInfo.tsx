@@ -120,15 +120,13 @@ const PokemonInfoScreen: FC = () => {
     );
   }
 
-  console.log(abilities);
-
   // Get first Pokémon type
   const [firstType] = pokemon.types;
 
   return (
     <Layout>
-      <ScrollView>
-        <Box bgColor={getTypeColor(firstType.type.name)} p="4" w="100%">
+      <ScrollView bgColor={getTypeColor(firstType.type.name)}>
+        <Box p="4" w="100%">
           <Image
             alt={pokemon.name}
             h="200px"
@@ -140,29 +138,31 @@ const PokemonInfoScreen: FC = () => {
           <Heading textTransform="capitalize">{pokemon.name}</Heading>
         </Box>
 
-        <Stack p="4" space={4}>
+        <Stack borderRadius="3xl" bgColor="white" px={4} py={6} space={4}>
           <Heading color="brand.200" fontSize="lg">
             About
           </Heading>
 
           <Divider />
 
+          {/* Pokémon height */}
           <Stack space={1}>
             <Heading fontSize="sm">Height</Heading>
 
             <Text>{pokemon.height} dm</Text>
           </Stack>
 
+          {/* Pokémon weight */}
           <Stack space={1}>
             <Heading fontSize="sm">Weight</Heading>
 
             <Text>{pokemon.weight} hg</Text>
           </Stack>
 
+          {/* Pokémon types */}
           <Stack space={2}>
             <Heading fontSize="sm">Types</Heading>
 
-            {/* Pokémon types */}
             <HStack space={2}>
               {pokemon.types.map((item, index) => (
                 <PokemonTypeBadge key={`type-${index}`} item={item} />
