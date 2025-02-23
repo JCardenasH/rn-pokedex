@@ -5,6 +5,6 @@ module.exports = {
       '<rootDir>/__mocks__/file-mock.js',
   },
   transformIgnorePatterns: [
-    'node_modules/(?!(@react-native|react-native|react-native-url-polyfill|react-redux)/)',
+    'node_modules/(?!((jest-)?react-native|@react-native(-community)?|react-native-safe-area-context|react-redux|react-native-url-polyfill)/)',
   ],
 };
