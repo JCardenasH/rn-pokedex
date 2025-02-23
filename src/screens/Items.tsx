@@ -1,34 +1,25 @@
+import type { StaticScreenProps } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { FlatList } from 'native-base';
 import type { Item } from 'pokenode-ts';
 import React, { useCallback, useEffect, type FC } from 'react';
-import { StyleSheet, type ListRenderItemInfo } from 'react-native';
+import { FlatList, StyleSheet, type ListRenderItemInfo } from 'react-native';
 import Layout from '../components/common/Layout';
-import Spinner from '../components/common/Spinner';
+import Loader from '../components/common/Loader';
 import ItemTile from '../components/items/ItemTile';
-import Routes from '../constants/routes';
 import { useAllItems, useItemsState } from '../hooks/items';
 import { useAppDispatch } from '../hooks/store';
-import type { ItemsStackParamList } from '../navigation/ItemsStack';
 import { getItemsThunk } from '../store/slices/items';
 
-/**
- * Items screen navigation prop.
- */
-export type ItemsScreenNavigationProp = NativeStackNavigationProp<
-  ItemsStackParamList,
-  Routes.ItemsScreen
->;
+type Props = StaticScreenProps<undefined>;
 
 /**
  * Items screen component.
  */
-const ItemsScreen: FC = () => {
+const ItemsScreen: FC<Props> = () => {
   /**
    * Navigation prop.
    */
-  const navigation = useNavigation<ItemsScreenNavigationProp>();
+  const navigation = useNavigation();
 
   /**
    * App dispatch.
@@ -73,7 +64,7 @@ const ItemsScreen: FC = () => {
    * Render item.
    */
   const renderItem = useCallback(
-    ({ item }: ListRenderItemInfo<Item>) => <ItemTile item={item} />,
+    (info: ListRenderItemInfo<Item>) => <ItemTile item={info.item} />,
     [],
   );
 
@@ -83,7 +74,7 @@ const ItemsScreen: FC = () => {
         contentContainerStyle={styles.list}
         numColumns={2}
         data={items}
-        ListFooterComponent={<Spinner isLoading={loading} />}
+        ListFooterComponent={<Loader isLoading={loading} />}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.2}
         renderItem={renderItem}

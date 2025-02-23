@@ -1,52 +1,35 @@
-import {
-  createNativeStackNavigator,
-  type NativeStackNavigationOptions,
-} from '@react-navigation/native-stack';
-import React, { type FC } from 'react';
-import Routes from '../constants/routes';
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import type { StaticParamList } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ItemsScreen from '../screens/Items';
+import type { MainTabParamList } from './MainTab';
 
-/**
- * Items stack navigator - Param list.
- */
-export type ItemsStackParamList = {
+const ItemsStack = createNativeStackNavigator({
+  screens: {
+    Items: {
+      screen: ItemsScreen,
+      options: { title: 'Items' },
+    },
+  },
+
   /**
-   * Items screen params.
+   * Items stack navigator - Screen options.
    */
-  [Routes.ItemsScreen]: undefined;
-};
+  screenOptions: {
+    // Hide back title
+    headerBackButtonDisplayMode: 'minimal',
+    // Header background style
+    headerStyle: { backgroundColor: '#222224' },
+    // Header tint color
+    headerTintColor: '#f0f0f0',
+  },
+});
 
-/**
- * Items stack navigator.
- */
-const Stack = createNativeStackNavigator<ItemsStackParamList>();
+export type ItemsStackParamList = StaticParamList<typeof ItemsStack>;
 
-/**
- * Items stack navigator - Screen options.
- */
-const screenOptions: NativeStackNavigationOptions = {
-  // Hide back title
-  headerBackTitleVisible: false,
-  // Header background style
-  headerStyle: { backgroundColor: '#222224' },
-  // Header tint color
-  headerTintColor: '#f0f0f0',
-};
-
-/**
- * Items stack navigator component.
- */
-const ItemsStack: FC = () => {
-  return (
-    <Stack.Navigator screenOptions={screenOptions}>
-      {/* Items list screen */}
-      <Stack.Screen
-        name={Routes.ItemsScreen}
-        component={ItemsScreen}
-        options={{ title: 'Items' }}
-      />
-    </Stack.Navigator>
-  );
-};
+export type ItemsStackNavigationProp = BottomTabNavigationProp<
+  MainTabParamList,
+  'ItemsStack'
+>;
 
 export default ItemsStack;

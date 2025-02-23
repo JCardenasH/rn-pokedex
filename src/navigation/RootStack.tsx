@@ -1,43 +1,27 @@
-import type { NavigatorScreenParams } from '@react-navigation/native';
+import { StaticParamList } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { type FC } from 'react';
-import Routes from '../constants/routes';
 import WelcomeScreen from '../screens/Welcome';
-import MainTab, { type MainTabParamList } from './MainTab';
+import MainTab from './MainTab';
 
-/**
- * Root stack navigator - Param list.
- */
-export type RootStackParamList = {
-  /**
-   * Welcome screen params.
-   */
-  [Routes.WelcomeScreen]: undefined;
+const RootStack = createNativeStackNavigator({
+  initialRouteName: 'Welcome',
+  screens: {
+    /**
+     * Welcome screen.
+     */
+    Welcome: WelcomeScreen,
 
-  /**
-   * Main tab navigator params.
-   */
-  [Routes.MainTab]: NavigatorScreenParams<MainTabParamList>;
-};
+    /**
+     * Main tab navigator.
+     */
+    MainTab: MainTab,
+  },
+  screenOptions: {
+    // Hide header
+    headerShown: false,
+  },
+});
 
-/**
- * Root stack navigator.
- */
-const Stack = createNativeStackNavigator<RootStackParamList>();
-
-/**
- * Root stack navigator component.
- */
-const RootStack: FC = () => {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {/* Welcome screen */}
-      <Stack.Screen name={Routes.WelcomeScreen} component={WelcomeScreen} />
-
-      {/* Main tab navigator */}
-      <Stack.Screen name={Routes.MainTab} component={MainTab} />
-    </Stack.Navigator>
-  );
-};
+export type RootStackParamList = StaticParamList<typeof RootStack>;
 
 export default RootStack;

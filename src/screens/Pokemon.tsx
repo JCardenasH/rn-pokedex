@@ -1,34 +1,34 @@
-import { useNavigation } from '@react-navigation/native';
+import {
+  useNavigation,
+  type StaticScreenProps,
+} from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { FlatList } from 'native-base';
 import type { Pokemon } from 'pokenode-ts';
 import React, { useCallback, useEffect, type FC } from 'react';
-import { StyleSheet, type ListRenderItemInfo } from 'react-native';
+import { FlatList, StyleSheet, type ListRenderItem } from 'react-native';
 import Layout from '../components/common/Layout';
-import Spinner from '../components/common/Spinner';
+import Loader from '../components/common/Loader';
 import PokemonItem from '../components/pokemon/PokemonItem';
-import Routes from '../constants/routes';
 import { useAllPokemon, usePokemonState } from '../hooks/pokemon';
 import { useAppDispatch } from '../hooks/store';
 import type { PokemonStackParamList } from '../navigation/PokemonStack';
 import { getPokemonThunk } from '../store/slices/pokemon';
 
-/**
- * Pokémon screen navigation prop.
- */
 export type PokemonScreenNavigationProp = NativeStackNavigationProp<
   PokemonStackParamList,
-  Routes.PokemonScreen
+  'Pokemon'
 >;
+
+type Props = StaticScreenProps<undefined>;
 
 /**
  * Pokémon screen component.
  */
-const PokemonScreen: FC = () => {
+const PokemonScreen: FC<Props> = () => {
   /**
    * Navigation prop.
    */
-  const navigation = useNavigation<PokemonScreenNavigationProp>();
+  const navigation = useNavigation();
 
   /**
    * App dispatch.
@@ -72,8 +72,8 @@ const PokemonScreen: FC = () => {
   /**
    * Render Pokémon item.
    */
-  const renderItem = useCallback(
-    ({ item }: ListRenderItemInfo<Pokemon>) => <PokemonItem pokemon={item} />,
+  const renderItem: ListRenderItem<Pokemon> = useCallback(
+    ({ item }) => <PokemonItem pokemon={item} />,
     [],
   );
 
@@ -82,7 +82,8 @@ const PokemonScreen: FC = () => {
       <FlatList
         contentContainerStyle={styles.list}
         data={pokemon}
-        ListFooterComponent={<Spinner isLoading={loading} />}
+        keyExtractor={item => item.id.toString()}
+        ListFooterComponent={<Loader isLoading={loading} />}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.2}
         renderItem={renderItem}

@@ -1,9 +1,7 @@
 import {
   useNavigation,
-  useRoute,
-  type RouteProp,
+  type StaticScreenProps,
 } from '@react-navigation/native';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import {
   Box,
   Divider,
@@ -19,48 +17,29 @@ import React, { useCallback, useEffect, useState, type FC } from 'react';
 import { Alert } from 'react-native';
 import AbilitiesApi from '../api/abilities';
 import Layout from '../components/common/Layout';
-import Spinner from '../components/common/Spinner';
+import Loader from '../components/common/Loader';
 import PokemonAbilityInfo from '../components/pokemon/PokemonAbilityInfo';
 import PokemonTypeBadge from '../components/pokemon/PokemonTypeBadge';
-import Routes from '../constants/routes';
 import { useSinglePokemon } from '../hooks/pokemon';
-import type { PokemonStackParamList } from '../navigation/PokemonStack';
 import { capitalizeName, getTypeColor } from '../utils/pokemon';
 
-/**
- * Pokémon info screen - Navigation prop.
- */
-export type PokemonInfoScreenNavigationProp = NativeStackNavigationProp<
-  PokemonStackParamList,
-  Routes.PokemonInfoScreen
->;
-
-/**
- * Pokémon info screen - Route prop.
- */
-export type PokemonInfoScreenRoute = RouteProp<
-  PokemonStackParamList,
-  Routes.PokemonInfoScreen
->;
+type Props = StaticScreenProps<{
+  id: number;
+}>;
 
 /**
  * Pokémon info screen component.
  */
-const PokemonInfoScreen: FC = () => {
+const PokemonInfoScreen: FC<Props> = ({ route }) => {
   /**
    * Navigation prop.
    */
-  const navigation = useNavigation<PokemonInfoScreenNavigationProp>();
-
-  /**
-   * Route prop.
-   */
-  const { params } = useRoute<PokemonInfoScreenRoute>();
+  const navigation = useNavigation();
 
   /**
    * Selected Pokémon.
    */
-  const pokemon = useSinglePokemon(params.id);
+  const pokemon = useSinglePokemon(route.params.id);
 
   /**
    * Is loading abilities? state.
@@ -177,7 +156,7 @@ const PokemonInfoScreen: FC = () => {
           <Divider />
 
           {loading ? (
-            <Spinner isLoading={loading} />
+            <Loader isLoading={loading} />
           ) : (
             <>
               {abilities.map((item, index) => (

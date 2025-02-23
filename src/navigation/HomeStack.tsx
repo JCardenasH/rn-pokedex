@@ -1,41 +1,31 @@
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import type { StaticParamList } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { type FC } from 'react';
-import Routes from '../constants/routes';
 import HomeScreen from '../screens/Home';
-
-/**
- * Home stack navigator - Param list.
- */
-export type HomeStackParamList = {
-  /**
-   * Home screen params.
-   */
-  [Routes.HomeScreen]: undefined;
-};
+import type { MainTabParamList } from './MainTab';
 
 /**
  * Home stack navigator.
  */
-const Stack = createNativeStackNavigator<HomeStackParamList>();
+const HomeStack = createNativeStackNavigator({
+  screens: {
+    Home: HomeScreen,
+  },
+  screenOptions: {
+    // Hide back title
+    headerBackButtonDisplayMode: 'minimal',
+    // Header background style
+    headerStyle: { backgroundColor: '#222224' },
+    // Header tint color
+    headerTintColor: '#f0f0f0',
+  },
+});
 
-/**
- * Home stack navigator component.
- */
-const HomeStack: FC = () => {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        // Hide back title
-        headerBackTitleVisible: false,
-        // Header background style
-        headerStyle: { backgroundColor: '#222224' },
-        // Header tint color
-        headerTintColor: '#f0f0f0',
-      }}>
-      {/* Home list screen */}
-      <Stack.Screen name={Routes.HomeScreen} component={HomeScreen} />
-    </Stack.Navigator>
-  );
-};
+export type HomeStackParamList = StaticParamList<typeof HomeStack>;
+
+export type HomeStackNavigationProp = BottomTabNavigationProp<
+  MainTabParamList,
+  'HomeStack'
+>;
 
 export default HomeStack;

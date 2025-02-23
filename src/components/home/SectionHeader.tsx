@@ -1,6 +1,6 @@
+import FontAwesome from '@react-native-vector-icons/fontawesome6';
 import { Button, Heading, HStack, Icon } from 'native-base';
 import React, { memo, type FC } from 'react';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 type Props = {
   onPressMore: () => void;

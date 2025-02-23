@@ -3,7 +3,6 @@ import { Heading, HStack, Image, Pressable, VStack } from 'native-base';
 import type { Pokemon } from 'pokenode-ts';
 import React, { memo, useCallback, type FC } from 'react';
 import { useWindowDimensions } from 'react-native';
-import Routes from '../../constants/routes';
 import type { PokemonScreenNavigationProp } from '../../screens/Pokemon';
 import PokemonTypeBadge from './PokemonTypeBadge';
 
@@ -36,7 +35,7 @@ const PokemonItem: FC<Props> = ({ pokemon }) => {
    * Redirects to the information screen of the pressed Pokémon item.
    */
   const onPress = useCallback(() => {
-    navigation.navigate(Routes.PokemonInfoScreen, { id: pokemon.id });
+    navigation.navigate('PokemonInfo', { id: pokemon.id });
   }, [navigation, pokemon]);
 
   return (

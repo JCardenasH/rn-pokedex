@@ -1,35 +1,37 @@
-import { type BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import {
   useNavigation,
-  type CompositeNavigationProp,
+  type StaticScreenProps,
 } from '@react-navigation/native';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Box, Center, HStack, ScrollView, Stack } from 'native-base';
 import React, { useCallback, useEffect, type FC } from 'react';
 import Layout from '../components/common/Layout';
-import Spinner from '../components/common/Spinner';
+import Loader from '../components/common/Loader';
 import PokemonTile from '../components/home/PokemonTile';
 import SectionHeader from '../components/home/SectionHeader';
 import ItemTile from '../components/items/ItemTile';
-import Routes from '../constants/routes';
 import { useAllItems, useItemsState } from '../hooks/items';
 import { useAllPokemon, usePokemonState } from '../hooks/pokemon';
 import { useAppDispatch } from '../hooks/store';
-import { type HomeStackParamList } from '../navigation/HomeStack';
-import { type MainTabParamList } from '../navigation/MainTab';
+import type {
+  HomeStackNavigationProp,
+  HomeStackParamList,
+} from '../navigation/HomeStack';
 import { getItemsThunk } from '../store/slices/items';
 import { getPokemonThunk } from '../store/slices/pokemon';
 
-export type HomeScreenNavigationProp = CompositeNavigationProp<
-  BottomTabNavigationProp<MainTabParamList, Routes.HomeStack>,
-  NativeStackNavigationProp<HomeStackParamList, Routes.HomeScreen>
+export type HomeScreenNavigationProp = NativeStackNavigationProp<
+  HomeStackParamList,
+  'Home'
 >;
 
-const HomeScreen: FC = () => {
+type Props = StaticScreenProps<undefined>;
+
+const HomeScreen: FC<Props> = () => {
   /**
    * Navigation prop.
    */
-  const navigation = useNavigation<HomeScreenNavigationProp>();
+  const navigation = useNavigation<HomeStackNavigationProp>();
 
   /**
    * Dispatch.
@@ -80,8 +82,8 @@ const HomeScreen: FC = () => {
    * Pokémon section header - See more button - onPress event handler.
    */
   const onPressPokemon = useCallback(() => {
-    navigation.navigate(Routes.PokemonStack, {
-      screen: Routes.PokemonScreen,
+    navigation.navigate('PokemonStack', {
+      screen: 'Pokemon',
     });
   }, [navigation]);
 
@@ -89,8 +91,8 @@ const HomeScreen: FC = () => {
    * Items section header - See more button - onPress event handler.
    */
   const onPressItems = useCallback(() => {
-    navigation.navigate(Routes.ItemsStack, {
-      screen: Routes.ItemsScreen,
+    navigation.navigate('ItemsStack', {
+      screen: 'Items',
     });
   }, [navigation]);
 
@@ -101,7 +103,7 @@ const HomeScreen: FC = () => {
           <Box>
             <SectionHeader title="Pokedex" onPressMore={onPressPokemon} />
 
-            <Spinner isLoading={isLoadingPokemons} />
+            <Loader isLoading={isLoadingPokemons} />
 
             {!isLoadingPokemons && (
               <HStack flexWrap="wrap" justifyContent="space-around">
@@ -117,7 +119,7 @@ const HomeScreen: FC = () => {
           <Box>
             <SectionHeader title="Items" onPressMore={onPressItems} />
 
-            <Spinner isLoading={isLoadingItems} />
+            <Loader isLoading={isLoadingItems} />
 
             {!isLoadingItems && (
               <HStack flexWrap="wrap" justifyContent="space-around">

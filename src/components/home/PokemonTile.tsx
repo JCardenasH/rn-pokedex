@@ -3,8 +3,7 @@ import { Box, Heading, HStack, Image, Pressable, Stack } from 'native-base';
 import type { Pokemon } from 'pokenode-ts';
 import React, { memo, useCallback, type FC } from 'react';
 import { useWindowDimensions } from 'react-native';
-import Routes from '../../constants/routes';
-import type { HomeScreenNavigationProp } from '../../screens/Home';
+import type { HomeStackNavigationProp } from '../../navigation/HomeStack';
 import PokemonTypeBadge from '../pokemon/PokemonTypeBadge';
 
 /**
@@ -28,15 +27,15 @@ const PokemonTile: FC<Props> = ({ pokemon }) => {
   /**
    * Home screen navigation prop.
    */
-  const navigation = useNavigation<HomeScreenNavigationProp>();
+  const navigation = useNavigation<HomeStackNavigationProp>();
 
   /**
    * Tile - onPress event handler.
    */
   const onPress = useCallback(() => {
-    navigation.navigate(Routes.PokemonStack, {
+    navigation.navigate('PokemonStack', {
       // Set route name
-      screen: Routes.PokemonInfoScreen,
+      screen: 'PokemonInfo',
       // Set Pokémon info screen params
       params: { id: pokemon.id },
       // Set the screen not to be the initial one in case there are no screens in the stack

@@ -1,8 +1,8 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { NativeBaseProvider, StatusBar } from 'native-base';
+import { NativeBaseProvider } from 'native-base';
 import React, { type FC } from 'react';
+import { StatusBar } from 'react-native';
 import { Provider } from 'react-redux';
-import RootStack from './src/navigation/RootStack';
+import Navigation from './src/navigation';
 import store from './src/store';
 import theme from './src/theme';
 
@@ -12,9 +12,7 @@ const App: FC = () => {
       <NativeBaseProvider theme={theme}>
         <StatusBar backgroundColor="#222224" />
 
-        <NavigationContainer>
-          <RootStack />
-        </NavigationContainer>
+        <Navigation />
       </NativeBaseProvider>
     </Provider>
   );
