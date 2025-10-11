@@ -1,6 +1,7 @@
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import type { StaticParamList } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import PokemonScreen from '../screens/Pokemon';
 import PokemonInfoScreen from '../screens/PokemonInfo';
 import type { MainTabParamList } from './MainTab';

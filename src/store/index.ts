@@ -3,6 +3,7 @@ import {
   type Action,
   type ThunkAction,
 } from '@reduxjs/toolkit';
+
 import items from './slices/items';
 import pokemon from './slices/pokemon';
 
@@ -11,10 +12,7 @@ import pokemon from './slices/pokemon';
  */
 const store = configureStore({
   // Store middleware
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware({
-      serializableCheck: false,
-    }),
+  middleware: getDefaultMiddleware => getDefaultMiddleware(),
 
   // Store reducers
   reducer: {

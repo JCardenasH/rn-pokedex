@@ -15,7 +15,8 @@ class MainActivity : ReactActivity() {
   override fun getMainComponentName(): String = "RNPokedex"
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(null)
+    supportFragmentManager.fragmentFactory = RNScreensFragmentFactory()
+    super.onCreate(savedInstanceState)
   }
 
   /**

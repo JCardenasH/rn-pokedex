@@ -5,6 +5,7 @@ import {
 import { Box, Button, Image, Stack, StatusBar } from 'native-base';
 import React, { useCallback, type FC } from 'react';
 import { useWindowDimensions } from 'react-native';
+
 import { Images } from '../constants/assets';
 
 type Props = StaticScreenProps<undefined>;
@@ -54,7 +55,8 @@ const WelcomeScreen: FC<Props> = () => {
           colorScheme="red"
           onPress={onPress}
           mx="16"
-          w="80%">
+          w="80%"
+        >
           Start
         </Button>
       </Stack>

@@ -1,4 +1,5 @@
 import { URL } from 'react-native-url-polyfill';
+
 import type { ApiQueryArgs } from '../interfaces/pokemon';
 
 /**

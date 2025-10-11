@@ -1,6 +1,6 @@
-import {createStaticNavigation} from '@react-navigation/native';
-import type {RootStackParamList} from './RootStack';
-import RootStack from './RootStack';
+import { createStaticNavigation } from '@react-navigation/native';
+
+import RootStack, { type RootStackParamList } from './RootStack';
 
 declare global {
   namespace ReactNavigation {
