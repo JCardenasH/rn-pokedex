@@ -1,23 +1,19 @@
-import { extendTheme } from 'native-base';
+import {
+  MD3LightTheme as DefaultTheme,
+  type MD3Theme,
+} from 'react-native-paper';
 
 /**
  * App theme.
  *
  * Extend default NativeBase theme with app branding.
  */
-const theme = extendTheme({
+
+const theme: MD3Theme = {
+  ...DefaultTheme,
   colors: {
-    brand: {
-      // Darker red
-      100: '#ee1515',
-      // Red
-      200: '#f00000',
-      // Black
-      300: '#222224',
-      // White
-      400: '#f0f0f0',
-    },
+    ...DefaultTheme.colors,
   },
-});
+};
 
 export default theme;

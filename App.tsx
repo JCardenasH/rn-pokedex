@@ -1,24 +1,29 @@
 import { FC } from 'react';
-import { StatusBar, View } from 'react-native';
+import { StatusBar } from 'react-native';
+import { PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 
-import store from './src/store';
+import Navigation from '@/navigation';
+import store from '@/store';
+import theme from '@/theme';
 
 const App: FC = () => {
   return (
-    <Provider store={store}>
-      <SafeAreaProvider>
-        <StatusBar backgroundColor="#222224" barStyle="light-content" />
+    <PaperProvider theme={theme}>
+      <Provider store={store}>
+        <SafeAreaProvider>
+          <StatusBar backgroundColor="#222224" barStyle="light-content" />
 
-        <AppContent />
-      </SafeAreaProvider>
-    </Provider>
+          <Main />
+        </SafeAreaProvider>
+      </Provider>
+    </PaperProvider>
   );
 };
 
-const AppContent: FC = () => {
-  return <View />;
+const Main: FC = () => {
+  return <Navigation />;
 };
 
 export default App;

@@ -1,12 +1,9 @@
-import {
-  useNavigation,
-  type StaticScreenProps,
-} from '@react-navigation/native';
-import { Box, Button, Image, Stack, StatusBar } from 'native-base';
+import { type StaticScreenProps } from '@react-navigation/native';
 import React, { useCallback, type FC } from 'react';
-import { useWindowDimensions } from 'react-native';
+import { Image, StatusBar, View } from 'react-native';
+import { Button } from 'react-native-paper';
 
-import { Images } from '../constants/assets';
+import { Images } from '@/constants/assets';
 
 type Props = StaticScreenProps<undefined>;
 
@@ -15,52 +12,25 @@ type Props = StaticScreenProps<undefined>;
  */
 const WelcomeScreen: FC<Props> = () => {
   /**
-   * Window dimensions.
-   */
-  const layout = useWindowDimensions();
-
-  /**
-   * Navigation prop.
-   */
-  const navigation = useNavigation();
-
-  /**
    * Start button - onPress event handler.
    *
    * Navigates to Main tab navigator on press.
    */
   const onPress = useCallback(() => {
     // Navigate to Main tab navigator
-    navigation.navigate('MainTab');
-  }, [navigation]);
+    // navigation.navigate('MainTab');
+  }, []);
 
   return (
-    <Box bgColor="brand.400" justifyContent="center" safeArea flex={1}>
+    <View>
       <StatusBar barStyle="dark-content" backgroundColor="#222224" />
 
-      <Stack space={16}>
-        <Image
-          alt="Logo"
-          alignSelf="center"
-          h={layout.width * 0.8}
-          resizeMode="contain"
-          source={Images.Pokeball}
-          w={layout.width * 0.8}
-        />
+      <View>
+        <Image alt="Logo" resizeMode="contain" source={Images.Pokeball} />
 
-        <Button
-          _text={{ textTransform: 'uppercase' }}
-          alignSelf="center"
-          bgColor="brand.200"
-          colorScheme="red"
-          onPress={onPress}
-          mx="16"
-          w="80%"
-        >
-          Start
-        </Button>
-      </Stack>
-    </Box>
+        <Button onPress={onPress}>Start</Button>
+      </View>
+    </View>
   );
 };
 
