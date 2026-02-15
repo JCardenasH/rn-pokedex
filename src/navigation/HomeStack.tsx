@@ -2,7 +2,8 @@ import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import type { StaticParamList } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import HomeScreen from '../screens/Home';
+import { HomeScreen } from '@/screens/Home';
+
 import type { MainTabParamList } from './MainTab';
 
 /**

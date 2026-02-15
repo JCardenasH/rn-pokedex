@@ -1,28 +1,49 @@
 import FontAwesome from '@react-native-vector-icons/fontawesome6';
-import { Button, Heading, HStack, Icon } from 'native-base';
-import React, { memo, type FC } from 'react';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Button, Text } from 'react-native-paper';
 
-type Props = {
+import { brand300 } from '@/constants/colors';
+
+export interface SectionHeaderProps {
   onPressMore: () => void;
   title: string;
-};
+}
 
-const SectionHeader: FC<Props> = ({ onPressMore, title }) => {
-  return (
-    <HStack alignItems="center" justifyContent="space-between">
-      {/* Header title */}
-      <Heading>{title}</Heading>
+export const SectionHeader: React.FC<SectionHeaderProps> = ({
+  onPressMore,
+  title,
+}) => (
+  <View style={styles.container}>
+    {/* Header title */}
+    <Text variant="titleLarge">{title}</Text>
 
-      <Button
-        _text={{ color: 'brand.300' }}
-        colorScheme="black"
-        onPress={onPressMore}
-        rightIcon={<Icon as={FontAwesome} name="chevron-right" />}
-        variant="ghost">
-        See more
-      </Button>
-    </HStack>
-  );
-};
+    <Button
+      mode="text"
+      onPress={onPressMore}
+      textColor={brand300}
+      contentStyle={styles.button}
+      icon={({ size, color }) => (
+        <FontAwesome
+          name="chevron-right"
+          iconStyle="solid"
+          size={size}
+          color={color}
+        />
+      )}
+    >
+      See more
+    </Button>
+  </View>
+);
 
-export default memo(SectionHeader);
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  button: {
+    flexDirection: 'row-reverse',
+  },
+});

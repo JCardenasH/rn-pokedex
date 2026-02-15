@@ -2,32 +2,22 @@ import {
   useNavigation,
   type StaticScreenProps,
 } from '@react-navigation/native';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Box, Center, HStack, ScrollView, Stack } from 'native-base';
-import React, { useCallback, useEffect, type FC } from 'react';
-import Layout from '../components/common/Layout';
-import Loader from '../components/common/Loader';
-import PokemonTile from '../components/home/PokemonTile';
-import SectionHeader from '../components/home/SectionHeader';
-import ItemTile from '../components/items/ItemTile';
-import { useAllItems, useItemsState } from '../hooks/items';
-import { useAllPokemon, usePokemonState } from '../hooks/pokemon';
-import { useAppDispatch } from '../hooks/store';
-import type {
-  HomeStackNavigationProp,
-  HomeStackParamList,
-} from '../navigation/HomeStack';
-import { getItemsThunk } from '../store/slices/items';
-import { getPokemonThunk } from '../store/slices/pokemon';
+import React, { useCallback, useEffect } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
-export type HomeScreenNavigationProp = NativeStackNavigationProp<
-  HomeStackParamList,
-  'Home'
->;
+import { Layout, Loader } from '@/components/common';
+import { PokemonTile, SectionHeader } from '@/components/home';
+import { ItemTile } from '@/components/items';
+import { useAllItems, useItemsState } from '@/hooks/items';
+import { useAllPokemon, usePokemonState } from '@/hooks/pokemon';
+import { useAppDispatch } from '@/hooks/store';
+import type { HomeStackNavigationProp } from '@/navigation/HomeStack';
+import { getItemsThunk } from '@/store/slices/items';
+import { getPokemonThunk } from '@/store/slices/pokemon';
 
-type Props = StaticScreenProps<undefined>;
+export type HomeScreenProps = StaticScreenProps<undefined>;
 
-const HomeScreen: FC<Props> = () => {
+export const HomeScreen: React.FC<HomeScreenProps> = () => {
   /**
    * Navigation prop.
    */
@@ -74,7 +64,9 @@ const HomeScreen: FC<Props> = () => {
       }
     });
 
-    return unsubscribe;
+    return () => {
+      unsubscribe();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation]);
 
@@ -98,43 +90,62 @@ const HomeScreen: FC<Props> = () => {
 
   return (
     <Layout>
-      <ScrollView _contentContainerStyle={{ p: 4 }} nestedScrollEnabled>
-        <Stack space={2}>
-          <Box>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        nestedScrollEnabled
+      >
+        <View style={styles.sections}>
+          <View>
             <SectionHeader title="Pokedex" onPressMore={onPressPokemon} />
 
             <Loader isLoading={isLoadingPokemons} />
 
             {!isLoadingPokemons && (
-              <HStack flexWrap="wrap" justifyContent="space-around">
+              <View style={styles.grid}>
                 {pokemon.slice(0, 4).map((item, index) => (
-                  <Center key={`pokemon-${index}`} w="50%">
+                  <View key={`pokemon-${index}`} style={styles.gridItem}>
                     <PokemonTile pokemon={item} />
-                  </Center>
+                  </View>
                 ))}
-              </HStack>
+              </View>
             )}
-          </Box>
+          </View>
 
-          <Box>
+          <View>
             <SectionHeader title="Items" onPressMore={onPressItems} />
 
             <Loader isLoading={isLoadingItems} />
 
             {!isLoadingItems && (
-              <HStack flexWrap="wrap" justifyContent="space-around">
+              <View style={styles.grid}>
                 {items.slice(0, 4).map((item, index) => (
-                  <Center key={`item-${index}`} w="50%">
+                  <View key={`item-${index}`} style={styles.gridItem}>
                     <ItemTile item={item} />
-                  </Center>
+                  </View>
                 ))}
-              </HStack>
+              </View>
             )}
-          </Box>
-        </Stack>
+          </View>
+        </View>
       </ScrollView>
     </Layout>
   );
 };
 
-export default HomeScreen;
+const styles = StyleSheet.create({
+  scrollContent: {
+    padding: 16,
+  },
+  sections: {
+    gap: 8,
+  },
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+  },
+  gridItem: {
+    width: '50%',
+    alignItems: 'center',
+  },
+});

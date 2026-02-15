@@ -1,25 +1,32 @@
-import { Badge } from 'native-base';
 import type { PokemonType } from 'pokenode-ts';
-import React, { memo, type FC } from 'react';
-import { getTypeColor } from '../../utils/pokemon';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Text } from 'react-native-paper';
 
-type Props = {
+import { brand300 } from '@/constants/colors';
+import { getTypeColor } from '@/utils/pokemon';
+
+export interface PokemonTypeBadgeProps {
   item: PokemonType;
-};
+}
 
-const PokemonTypeBadge: FC<Props> = ({ item }) => {
-  return (
-    <Badge
-      _text={{
-        color: 'brand.300',
-        fontSize: '2xs',
-        textTransform: 'capitalize',
-      }}
-      bgColor={getTypeColor(item.type.name)}
-      rounded="full">
-      {item.type.name}
-    </Badge>
-  );
-};
+export const PokemonTypeBadge: React.FC<PokemonTypeBadgeProps> = ({ item }) => (
+  <View
+    style={[styles.badge, { backgroundColor: getTypeColor(item.type.name) }]}
+  >
+    <Text style={styles.text}>{item.type.name}</Text>
+  </View>
+);
 
-export default memo(PokemonTypeBadge);
+const styles = StyleSheet.create({
+  badge: {
+    borderRadius: 999,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+  },
+  text: {
+    color: brand300,
+    fontSize: 10,
+    textTransform: 'capitalize',
+  },
+});

@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+
 import type { RootState } from '..';
 import pokemonEntityAdapter from '../entities/pokemon';
 import { getPokemon } from '../thunks/pokemon';

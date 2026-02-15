@@ -1,18 +1,23 @@
-import { Heading, Stack, Text } from 'native-base';
 import type { Ability } from 'pokenode-ts';
 import React, { useMemo, type FC } from 'react';
-import { capitalizeName } from '../../utils/pokemon';
+import { StyleSheet, View } from 'react-native';
+import { Text } from 'react-native-paper';
 
-type Props = {
+import { capitalizeName } from '@/utils/pokemon';
+
+export interface PokemonAbilityInfoProps {
   ability: Ability;
   language?: string;
-};
+}
 
-const PokemonAbilityInfo: FC<Props> = ({ ability, language = 'en' }) => {
+export const PokemonAbilityInfo: FC<PokemonAbilityInfoProps> = ({
+  ability,
+  language = 'en',
+}) => {
   /**
    * Name.
    *
-   * Searchs the name based on the selected language.
+   * Searches the name based on the selected language.
    * If not exists, it will return the entity name
    */
   const name = useMemo(() => {
@@ -24,7 +29,7 @@ const PokemonAbilityInfo: FC<Props> = ({ ability, language = 'en' }) => {
   /**
    * Effect description.
    *
-   * Searchs the effect entry based on the selected language.
+   * Searches the effect entry based on the selected language.
    * If not exists, it will return the first entry.
    */
   const description = useMemo(() => {
@@ -36,12 +41,15 @@ const PokemonAbilityInfo: FC<Props> = ({ ability, language = 'en' }) => {
   }, [ability, language]);
 
   return (
-    <Stack space={2}>
-      <Heading fontSize="sm">{name}</Heading>
-
-      <Text>{description}</Text>
-    </Stack>
+    <View style={styles.container}>
+      <Text variant="labelLarge">{name}</Text>
+      <Text variant="bodyMedium">{description}</Text>
+    </View>
   );
 };
 
-export default PokemonAbilityInfo;
+const styles = StyleSheet.create({
+  container: {
+    gap: 8,
+  },
+});

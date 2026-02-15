@@ -1,8 +1,9 @@
 import { StaticParamList } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import WelcomeScreen from '../screens/Welcome';
-// import MainTab from './MainTab';
+import { WelcomeScreen } from '@/screens/Welcome';
+
+import MainTab from './MainTab';
 
 const RootStack = createNativeStackNavigator({
   initialRouteName: 'Welcome',
@@ -15,7 +16,7 @@ const RootStack = createNativeStackNavigator({
     /**
      * Main tab navigator.
      */
-    // MainTab: MainTab,
+    MainTab: MainTab,
   },
   screenOptions: {
     // Hide header

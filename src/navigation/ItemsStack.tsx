@@ -2,7 +2,8 @@ import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import type { StaticParamList } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import ItemsScreen from '../screens/Items';
+import { ItemsScreen } from '@/screens/Items';
+
 import type { MainTabParamList } from './MainTab';
 
 const ItemsStack = createNativeStackNavigator({

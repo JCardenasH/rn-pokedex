@@ -2,35 +2,28 @@ import {
   useNavigation,
   type StaticScreenProps,
 } from '@react-navigation/native';
-import {
-  Box,
-  Divider,
-  Heading,
-  HStack,
-  Image,
-  ScrollView,
-  Stack,
-  Text,
-} from 'native-base';
 import type { Ability } from 'pokenode-ts';
-import React, { useCallback, useEffect, useState, type FC } from 'react';
-import { Alert } from 'react-native';
-import AbilitiesApi from '../api/abilities';
-import Layout from '../components/common/Layout';
-import Loader from '../components/common/Loader';
-import PokemonAbilityInfo from '../components/pokemon/PokemonAbilityInfo';
-import PokemonTypeBadge from '../components/pokemon/PokemonTypeBadge';
-import { useSinglePokemon } from '../hooks/pokemon';
-import { capitalizeName, getTypeColor } from '../utils/pokemon';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Alert, Image, ScrollView, StyleSheet, View } from 'react-native';
+import { Divider, Text } from 'react-native-paper';
 
-type Props = StaticScreenProps<{
+import { AbilitiesApi } from '@/api';
+import { Layout, Loader } from '@/components/common';
+import { PokemonAbilityInfo, PokemonTypeBadge } from '@/components/pokemon';
+import { brand200 } from '@/constants/colors';
+import { useSinglePokemon } from '@/hooks';
+import { capitalizeName, getTypeColor } from '@/utils/pokemon';
+
+export type PokemonInfoScreenProps = StaticScreenProps<{
   id: number;
 }>;
 
 /**
  * Pokémon info screen component.
  */
-const PokemonInfoScreen: FC<Props> = ({ route }) => {
+export const PokemonInfoScreen: React.FC<PokemonInfoScreenProps> = ({
+  route,
+}) => {
   /**
    * Navigation prop.
    */
@@ -81,7 +74,7 @@ const PokemonInfoScreen: FC<Props> = ({ route }) => {
         }
 
         setAbilities(items);
-      } catch (error) {
+      } catch {
         Alert.alert(
           'Abilities',
           'There was an error while fetching the Pokémon abilities',
@@ -95,7 +88,9 @@ const PokemonInfoScreen: FC<Props> = ({ route }) => {
   // If the selected Pokémon doesn't exist or an error occurred, it will display an error text
   if (!pokemon) {
     return (
-      <Text mx="2">There was a problem getting the Pokémon information</Text>
+      <Text style={styles.errorText}>
+        There was a problem getting the Pokémon information
+      </Text>
     );
   }
 
@@ -104,54 +99,55 @@ const PokemonInfoScreen: FC<Props> = ({ route }) => {
 
   return (
     <Layout>
-      <ScrollView bgColor={getTypeColor(firstType.type.name)}>
-        <Box p="4" w="100%">
+      <ScrollView
+        style={{ backgroundColor: getTypeColor(firstType.type.name) }}
+      >
+        <View style={styles.header}>
           <Image
-            alt={pokemon.name}
-            h="200px"
+            accessibilityLabel={pokemon.name}
             resizeMode="contain"
             source={{ uri: pokemon.sprites.front_default! }}
-            w="100%"
+            style={styles.heroImage}
           />
 
-          <Heading textTransform="capitalize">{pokemon.name}</Heading>
-        </Box>
+          <Text variant="headlineMedium" style={styles.pokemonName}>
+            {pokemon.name}
+          </Text>
+        </View>
 
-        <Stack borderRadius="3xl" bgColor="white" px={4} py={6} space={4}>
-          <Heading color="brand.200" fontSize="lg">
+        <View style={styles.detailsCard}>
+          <Text variant="titleMedium" style={styles.sectionTitle}>
             About
-          </Heading>
+          </Text>
 
           <Divider />
 
           {/* Pokémon height */}
-          <Stack space={1}>
-            <Heading fontSize="sm">Height</Heading>
-
-            <Text>{pokemon.height} dm</Text>
-          </Stack>
+          <View style={styles.fieldGroup}>
+            <Text variant="labelLarge">Height</Text>
+            <Text variant="bodyMedium">{pokemon.height} dm</Text>
+          </View>
 
           {/* Pokémon weight */}
-          <Stack space={1}>
-            <Heading fontSize="sm">Weight</Heading>
-
-            <Text>{pokemon.weight} hg</Text>
-          </Stack>
+          <View style={styles.fieldGroup}>
+            <Text variant="labelLarge">Weight</Text>
+            <Text variant="bodyMedium">{pokemon.weight} hg</Text>
+          </View>
 
           {/* Pokémon types */}
-          <Stack space={2}>
-            <Heading fontSize="sm">Types</Heading>
+          <View style={styles.fieldGroupTypes}>
+            <Text variant="labelLarge">Types</Text>
 
-            <HStack space={2}>
+            <View style={styles.typesRow}>
               {pokemon.types.map((item, index) => (
                 <PokemonTypeBadge key={`type-${index}`} item={item} />
               ))}
-            </HStack>
-          </Stack>
+            </View>
+          </View>
 
-          <Heading color="brand.200" fontSize="lg">
+          <Text variant="titleMedium" style={styles.sectionTitle}>
             Abilities
-          </Heading>
+          </Text>
 
           <Divider />
 
@@ -164,10 +160,45 @@ const PokemonInfoScreen: FC<Props> = ({ route }) => {
               ))}
             </>
           )}
-        </Stack>
+        </View>
       </ScrollView>
     </Layout>
   );
 };
 
-export default PokemonInfoScreen;
+const styles = StyleSheet.create({
+  errorText: {
+    marginHorizontal: 8,
+  },
+  header: {
+    padding: 16,
+    width: '100%',
+  },
+  heroImage: {
+    height: 200,
+    width: '100%',
+  },
+  pokemonName: {
+    textTransform: 'capitalize',
+  },
+  detailsCard: {
+    backgroundColor: 'white',
+    borderRadius: 24,
+    gap: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 24,
+  },
+  sectionTitle: {
+    color: brand200,
+  },
+  fieldGroup: {
+    gap: 4,
+  },
+  fieldGroupTypes: {
+    gap: 8,
+  },
+  typesRow: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+});

@@ -1,12 +1,13 @@
 import type { AxiosRequestConfig } from 'axios';
 import type { Ability } from 'pokenode-ts';
+
 import type { IdOrName } from '../interfaces/pokemon';
-import api from '../utils/api';
+import { api } from '../utils/api';
 
 /**
  * Abilities API module.
  */
-export default class AbilitiesApi {
+export class AbilitiesApi {
   /**
    * Get Ability info endpoint.
    *

@@ -1,45 +1,64 @@
-import { Box, Heading, Image, Stack } from 'native-base';
 import { type Item } from 'pokenode-ts';
-import React, { memo, type FC } from 'react';
-import { useWindowDimensions } from 'react-native';
+import React from 'react';
+import { Image, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Text } from 'react-native-paper';
+
+import { brand300 } from '@/constants/colors';
+import { shadow3 } from '@/styles/common';
 
 /**
  * Item - Tile component.
  */
-type Props = {
+export interface ItemTileProps {
   item: Item;
-};
+}
 
 /**
  * Item - Tile component.
  *
  * @param props - Component props.
  */
-const ItemTile: FC<Props> = ({ item }) => {
+export const ItemTile: React.FC<ItemTileProps> = ({ item }) => {
   /**
    * Window dimensions.
    */
   const layout = useWindowDimensions();
 
+  const imageSize = layout.width * 0.33;
+
   return (
-    <Box bgColor="white" borderRadius="lg" m="2" shadow="3">
-      <Stack p="3" space={2}>
+    <View style={styles.card}>
+      <View style={styles.content}>
         {/* Item image */}
         <Image
-          alt={item.name}
-          h={layout.width * 0.33}
+          accessibilityLabel={item.name}
           resizeMode="contain"
           source={{ uri: item.sprites.default! }}
-          w={layout.width * 0.33}
+          style={{ height: imageSize, width: imageSize }}
         />
 
         {/* Item name */}
-        <Heading color="brand.300" fontSize="lg" textTransform="capitalize">
+        <Text variant="titleMedium" style={styles.name}>
           {item.name}
-        </Heading>
-      </Stack>
-    </Box>
+        </Text>
+      </View>
+    </View>
   );
 };
 
-export default memo(ItemTile);
+const styles = StyleSheet.create({
+  card: {
+    backgroundColor: 'white',
+    borderRadius: 8,
+    margin: 8,
+    ...shadow3,
+  },
+  content: {
+    gap: 8,
+    padding: 12,
+  },
+  name: {
+    color: brand300,
+    textTransform: 'capitalize',
+  },
+});

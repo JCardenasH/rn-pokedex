@@ -1,13 +1,14 @@
 import type { AxiosRequestConfig } from 'axios';
 import type { NamedAPIResourceList, Pokemon } from 'pokenode-ts';
+
 import type { ApiQueryParams } from '../interfaces/common';
 import type { IdOrName } from '../interfaces/pokemon';
-import api from '../utils/api';
+import { api } from '../utils/api';
 
 /**
  * Pokémon API module.
  */
-export default class PokemonApi {
+export class PokemonApi {
   /**
    * Get Pokémon list endpoint.
    *

@@ -1,9 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { Pokemon } from 'pokenode-ts';
+
+import { PokemonApi } from '@/api/pokemon';
+import type { ApiQueryArgs } from '@/interfaces/pokemon';
+import { getParamsFromArgs } from '@/utils/url';
+
 import type { RootState } from '..';
-import PokemonApi from '../../api/pokemon';
-import type { ApiQueryArgs } from '../../interfaces/pokemon';
-import { getParamsFromArgs } from '../../utils/url';
 import type { PokemonState } from '../slices/pokemon';
 
 /**

@@ -1,21 +1,20 @@
 import type { StaticScreenProps } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import type { Item } from 'pokenode-ts';
-import React, { useCallback, useEffect, type FC } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { FlatList, StyleSheet, type ListRenderItemInfo } from 'react-native';
-import Layout from '../components/common/Layout';
-import Loader from '../components/common/Loader';
-import ItemTile from '../components/items/ItemTile';
-import { useAllItems, useItemsState } from '../hooks/items';
-import { useAppDispatch } from '../hooks/store';
-import { getItemsThunk } from '../store/slices/items';
 
-type Props = StaticScreenProps<undefined>;
+import { Layout, Loader } from '@/components/common';
+import { ItemTile } from '@/components/items';
+import { useAllItems, useAppDispatch, useItemsState } from '@/hooks';
+import { getItemsThunk } from '@/store/slices/items';
+
+export type ItemsScreenProps = StaticScreenProps<undefined>;
 
 /**
  * Items screen component.
  */
-const ItemsScreen: FC<Props> = () => {
+export const ItemsScreen: React.FC<ItemsScreenProps> = () => {
   /**
    * Navigation prop.
    */
@@ -44,12 +43,14 @@ const ItemsScreen: FC<Props> = () => {
       dispatch(getItemsThunk({ limit: 5, offset }));
     });
 
-    return unsubscribe;
+    return () => {
+      unsubscribe();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation]);
 
   /**
-   * Flatlist - onEndReached event handler.
+   * FlatList - onEndReached event handler.
    */
   const onEndReached = useCallback(() => {
     // Validates if there's a next URL stored in state
@@ -89,5 +90,3 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
 });
-
-export default ItemsScreen;

@@ -2,10 +2,10 @@ import MaterialDesignIcons from '@react-native-vector-icons/material-design-icon
 import Octicons from '@react-native-vector-icons/octicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import type { StaticParamList } from '@react-navigation/native';
-import { StatusBar } from 'react-native';
-import { Icon, Image } from 'native-base';
+import { Image, StatusBar } from 'react-native';
 
-import { Images } from '../constants/assets';
+import { Images } from '@/constants/assets';
+
 import HomeStack from './HomeStack';
 import ItemsStack from './ItemsStack';
 import PokemonStack from './PokemonStack';
@@ -28,12 +28,7 @@ const MainTab = createBottomTabNavigator({
       screen: ItemsStack,
       options: {
         tabBarIcon: ({ color, size }) => (
-          <Icon
-            as={MaterialDesignIcons}
-            color={color}
-            name="bag-personal"
-            size={size}
-          />
+          <MaterialDesignIcons color={color} name="bag-personal" size={size} />
         ),
       },
     },
@@ -45,7 +40,7 @@ const MainTab = createBottomTabNavigator({
       screen: HomeStack,
       options: {
         tabBarIcon: ({ color, size }) => (
-          <Icon as={Octicons} color={color} name="home" size={size} />
+          <Octicons color={color} name="home" size={size} />
         ),
       },
     },
@@ -58,11 +53,9 @@ const MainTab = createBottomTabNavigator({
       options: {
         tabBarIcon: ({ color, size }) => (
           <Image
-            alt="Pokeball"
-            h={`${size}px`}
-            tintColor={color}
+            accessibilityLabel="Pokeball"
             source={Images.Pokeball}
-            w={`${size}px`}
+            style={{ height: size, tintColor: color, width: size }}
           />
         ),
       },

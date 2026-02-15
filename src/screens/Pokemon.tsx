@@ -4,27 +4,26 @@ import {
 } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { Pokemon } from 'pokenode-ts';
-import React, { useCallback, useEffect, type FC } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { FlatList, StyleSheet, type ListRenderItem } from 'react-native';
-import Layout from '../components/common/Layout';
-import Loader from '../components/common/Loader';
-import PokemonItem from '../components/pokemon/PokemonItem';
-import { useAllPokemon, usePokemonState } from '../hooks/pokemon';
-import { useAppDispatch } from '../hooks/store';
-import type { PokemonStackParamList } from '../navigation/PokemonStack';
-import { getPokemonThunk } from '../store/slices/pokemon';
+
+import { Layout, Loader } from '@/components/common';
+import { PokemonItem } from '@/components/pokemon';
+import { useAllPokemon, useAppDispatch, usePokemonState } from '@/hooks';
+import type { PokemonStackParamList } from '@/navigation/PokemonStack';
+import { getPokemonThunk } from '@/store/slices/pokemon';
 
 export type PokemonScreenNavigationProp = NativeStackNavigationProp<
   PokemonStackParamList,
   'Pokemon'
 >;
 
-type Props = StaticScreenProps<undefined>;
+type PokemonScreenProps = StaticScreenProps<undefined>;
 
 /**
  * Pokémon screen component.
  */
-const PokemonScreen: FC<Props> = () => {
+export const PokemonScreen: React.FC<PokemonScreenProps> = () => {
   /**
    * Navigation prop.
    */
@@ -53,12 +52,14 @@ const PokemonScreen: FC<Props> = () => {
       dispatch(getPokemonThunk({ limit: 5, offset }));
     });
 
-    return unsubscribe;
+    return () => {
+      unsubscribe();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation]);
 
   /**
-   * Flatlist - onEndReached event handler.
+   * FlatList - onEndReached event handler.
    */
   const onEndReached = useCallback(() => {
     // Validates if there's a next URL stored in state
@@ -97,5 +98,3 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
 });
-
-export default PokemonScreen;

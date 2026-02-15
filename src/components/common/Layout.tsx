@@ -1,5 +1,7 @@
-import { Box } from 'native-base';
-import React, { memo, type FC, type PropsWithChildren } from 'react';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+
+import { brand400 } from '@/constants/colors';
 
 /**
  * Layout component.
@@ -8,12 +10,13 @@ import React, { memo, type FC, type PropsWithChildren } from 'react';
  *
  * @param props
  */
-const Layout: FC<PropsWithChildren> = props => {
-  return (
-    <Box bgColor="brand.400" flex={1}>
-      {props.children}
-    </Box>
-  );
-};
+export const Layout: React.FC<React.PropsWithChildren> = props => (
+  <View style={styles.container}>{props.children}</View>
+);
 
-export default memo(Layout);
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: brand400,
+    flex: 1,
+  },
+});

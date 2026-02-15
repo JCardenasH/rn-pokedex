@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+
 import type { RootState } from '..';
 import itemsEntityAdapter from '../entities/items';
 import { getItems } from '../thunks/items';

@@ -1,5 +1,6 @@
 import MockAdapter from 'axios-mock-adapter';
-import api from '../../utils/api';
+
+import { api } from '../../utils/api';
 
 describe('Pokémon API test', () => {
   it('Fetch Pokémon names', async () => {

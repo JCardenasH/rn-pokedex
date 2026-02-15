@@ -1,24 +1,34 @@
 import { useNavigation } from '@react-navigation/native';
-import { Heading, HStack, Image, Pressable, VStack } from 'native-base';
 import type { Pokemon } from 'pokenode-ts';
-import React, { memo, useCallback, type FC } from 'react';
-import { useWindowDimensions } from 'react-native';
-import type { PokemonScreenNavigationProp } from '../../screens/Pokemon';
-import PokemonTypeBadge from './PokemonTypeBadge';
+import React, { useCallback } from 'react';
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from 'react-native';
+import { Text } from 'react-native-paper';
+
+import { brand300 } from '@/constants/colors';
+import type { PokemonScreenNavigationProp } from '@/screens/Pokemon';
+import { shadow3 } from '@/styles/common';
+
+import { PokemonTypeBadge } from './PokemonTypeBadge';
 
 /**
  * Pokémon - List item component props.
  */
-type Props = {
+export interface PokemonItemProps {
   pokemon: Pokemon;
-};
+}
 
 /**
  * Pokémon - List item component.
  *
  * @param props - Component props.
  */
-const PokemonItem: FC<Props> = ({ pokemon }) => {
+export const PokemonItem: React.FC<PokemonItemProps> = ({ pokemon }) => {
   /**
    * Window dimensions.
    */
@@ -38,44 +48,64 @@ const PokemonItem: FC<Props> = ({ pokemon }) => {
     navigation.navigate('PokemonInfo', { id: pokemon.id });
   }, [navigation, pokemon]);
 
+  const imageSize = layout.width * 0.25;
+
   return (
     <Pressable onPress={onPress}>
-      {({ isPressed }) => (
-        <HStack
-          bgColor="white"
-          borderRadius="lg"
-          mx={4}
-          my={1.5}
-          opacity={isPressed ? 0.75 : 1}
-          px="1"
-          shadow="3"
-          space={2}>
+      {({ pressed }) => (
+        <View style={[styles.row, { opacity: pressed ? 0.75 : 1 }]}>
           {/* Pokémon image */}
           <Image
-            alt={pokemon.name}
-            h={layout.width * 0.25}
+            accessibilityLabel={pokemon.name}
             resizeMode="contain"
             source={{ uri: pokemon.sprites.front_default! }}
-            w={layout.width * 0.25}
+            style={{ height: imageSize, width: imageSize }}
           />
 
-          <VStack alignItems="flex-start" flex={1} pr={1} py={1.5} space={2}>
+          <View style={styles.info}>
             {/* Pokémon name */}
-            <Heading color="brand.300" fontSize="xl" textTransform="capitalize">
+            <Text style={styles.name} variant="titleMedium">
               {pokemon.name}
-            </Heading>
+            </Text>
 
             {/* Pokémon types */}
-            <HStack space={2}>
+            <View style={styles.typesRow}>
               {pokemon.types.map((item, index) => (
                 <PokemonTypeBadge key={`type-${index}`} item={item} />
               ))}
-            </HStack>
-          </VStack>
-        </HStack>
+            </View>
+          </View>
+        </View>
       )}
     </Pressable>
   );
 };
 
-export default memo(PokemonItem);
+const styles = StyleSheet.create({
+  row: {
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 8,
+    flexDirection: 'row',
+    gap: 8,
+    marginHorizontal: 16,
+    marginVertical: 6,
+    paddingHorizontal: 4,
+    ...shadow3,
+  },
+  info: {
+    alignItems: 'flex-start',
+    flex: 1,
+    gap: 8,
+    paddingRight: 4,
+    paddingVertical: 6,
+  },
+  typesRow: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  name: {
+    color: brand300,
+    textTransform: 'capitalize',
+  },
+});

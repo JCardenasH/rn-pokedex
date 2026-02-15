@@ -1,24 +1,31 @@
-import { Spinner } from 'native-base';
-import React, { memo, type FC } from 'react';
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 
 /**
  * Loader component props.
  */
-type Props = {
+export interface LoaderProps {
   isLoading: boolean;
-};
+}
 
 /**
  * Loader component.
  *
  * @param props - Component props.
  */
-const Loader: FC<Props> = ({ isLoading }) => {
+export const Loader: React.FC<LoaderProps> = ({ isLoading }) => {
   if (isLoading) {
-    return <Spinner color="red.600" my="4" size="large" />;
+    return (
+      <ActivityIndicator color="#dc2626" size="large" style={styles.spinner} />
+    );
   }
 
   return null;
 };
 
-export default memo(Loader);
+const styles = StyleSheet.create({
+  spinner: {
+    marginVertical: 16,
+  },
+});
